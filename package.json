@@ -12,6 +12,7 @@
     "test": "vitest",
     "test:e2e": "npm run build && playwright test",
     "test:e2e:pages": "cross-env GITHUB_PAGES=true npm run build && cross-env E2E_PAGES_BASE=true playwright test",
+    "test:e2e:public": "playwright test --config playwright.public.config.ts",
     "typecheck": "tsc --noEmit",
     "assets:images": "node scripts/generate-images.mjs && node scripts/check-images.mjs",
     "assets:audio": "node scripts/generate-audio.mjs",

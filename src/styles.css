@@ -1192,7 +1192,7 @@ button {
   }
 }
 
-@media (max-width: 767px) {
+@media (max-width: 1023px) {
   .navigator {
     display: none;
   }
@@ -1207,7 +1207,9 @@ button {
     border-radius: var(--radius) var(--radius) 0 0;
     box-shadow: 0 -8px 30px rgba(15, 23, 42, 0.18);
   }
+}
 
+@media (max-width: 767px) {
   /* Header dua baris di mobile supaya tombol "Daftar soal" dan "Selesaikan"
      tetap terlihat dan berukuran sentuh yang layak. */
   .exam-header__bar {

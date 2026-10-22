@@ -262,14 +262,29 @@ test.describe('Alur simulasi end-to-end', () => {
     await expect(page.locator('.results__note')).toContainText('Waktu habis');
   });
 
-  test('tata letak mobile dapat dipakai dan navigator bisa dibuka', async ({ page, isMobile }) => {
-    test.skip(!isMobile, 'Hanya untuk proyek mobile');
-    await startExam(page);
+  test('tata letak 360–1023px dapat dipakai, header terlihat, dan tanpa scroll horizontal', async ({ page }) => {
+      await startExam(page);
 
-    const headerBox = await page.getByTestId('header-timer').boundingBox();
-    expect(headerBox!.width).toBeGreaterThan(0);
+      for (const width of [360, 412, 768, 820, 1023]) {
+        await page.setViewportSize({ width, height: 900 });
+        await expect(page.getByTestId('header-timer')).toBeVisible();
+        await expect(page.getByTestId('finish-exam')).toBeVisible();
 
-      // Tombol header harus terlihat dan cukup besar untuk disentuh di 412px.
+        const overflow = await page.evaluate(
+          () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
+        );
+        expect(overflow, `scroll horizontal di ${width}px`).toBeLessThanOrEqual(1);
+
+        // Navigator tidak boleh mengambil ruang vertikal pada lebar ini
+        const inlineNavigator = await page.evaluate(() => {
+          const nav = document.querySelector('.navigator');
+          return nav ? getComputedStyle(nav).display : 'none';
+        });
+        expect(inlineNavigator, `navigator harus tersembunyi pada ${width}px`).toBe('none');
+      }
+
+      // Pada tablet/mobile, navigator dibuka lewat tombol sebagai panel overlay.
+      await page.setViewportSize({ width: 412, height: 900 });
       const openNav = page.getByTestId('open-navigator');
       await expect(openNav).toBeVisible();
       const navButtonBox = await openNav.boundingBox();
@@ -280,17 +295,29 @@ test.describe('Alur simulasi end-to-end', () => {
       await page.getByTestId('nav-10').click();
       await expect(page.getByTestId('question-10')).toBeVisible();
 
-      // Opsi dapat disentuh dan fon Jepang cukup besar
       const choice = page.getByTestId('choice-10-A');
       const box = await choice.boundingBox();
       expect(box!.height).toBeGreaterThanOrEqual(44);
       const fontSize = await page.locator('.question__prompt').evaluate((el) => parseFloat(getComputedStyle(el).fontSize));
       expect(fontSize).toBeGreaterThanOrEqual(18);
+    });
 
-      // Tidak ada scroll horizontal pada viewport mobile
-      const overflow = await page.evaluate(
-        () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
-      );
-      expect(overflow).toBeLessThanOrEqual(1);
+    test('pada desktop >= 1024px, mini-navigasi tampil di samping', async ({ page }) => {
+      await page.setViewportSize({ width: 1280, height: 900 });
+      await startExam(page);
+
+      const navigator = page.getByTestId('question-navigator');
+      await expect(navigator).toBeVisible();
+
+      const layout = await page.evaluate(() => {
+        const nav = document.querySelector('.navigator')!;
+        const body = document.querySelector('.exam-body')!;
+        return {
+          columns: getComputedStyle(body).gridTemplateColumns.split(' ').length,
+          navVisible: getComputedStyle(nav).display !== 'none',
+        };
+      });
+      expect(layout.navVisible).toBe(true);
+      expect(layout.columns).toBe(2);
     });
 });

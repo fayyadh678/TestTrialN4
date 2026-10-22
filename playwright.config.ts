@@ -9,6 +9,7 @@ const port = usePagesBase ? 4181 : 4180;
 
 export default defineConfig({
   testDir: './e2e',
+  testIgnore: 'public.spec.ts',
   timeout: 120_000,
   expect: { timeout: 15_000 },
   fullyParallel: false,
@@ -25,10 +26,14 @@ export default defineConfig({
       use: { ...devices['Desktop Chrome'] },
     },
     {
-      name: 'mobile',
-      use: { ...devices['Pixel 7'] },
+        name: 'tablet',
+        use: { ...devices['iPad Mini'], defaultBrowserType: 'chromium' },
     },
-  ],
+      {
+        name: 'mobile',
+        use: { ...devices['Pixel 7'] },
+      },
+    ],
   webServer: {
     command: `node scripts/serve-dist.mjs ${port} ${usePagesBase ? 'true' : 'false'}`,
     port,

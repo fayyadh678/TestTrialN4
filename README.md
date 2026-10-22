@@ -59,6 +59,7 @@ npm test              # Vitest: 57 unit/integration test
 npm test -- --run     # sekali jalan (dipakai CI)
 npm run test:e2e      # build + Playwright (desktop + mobile), dilayani dari dist/
 npm run test:e2e:pages # sama, tetapi base path /TestTrialN4/ (verifikasi GitHub Pages)
+npm run test:e2e:public # smoke test terhadap URL publik yang sudah dideploy
 ```
 
 Yang diuji:
@@ -71,10 +72,11 @@ Yang diuji:
 | `tests/persistence.test.ts` | Validasi `localStorage`, penolakan JSON rusak/schema salah, sanitasi jawaban & play count, countdown berbasis deadline |
 | `tests/assets.test.ts` | Semua path aset memakai `import.meta.env.BASE_URL` (bukan `/audio/...` absolut) |
 | `tests/app.test.tsx` | Alur UI: mulai, jawab, navigasi, dialog konfirmasi, hasil, review, filter, auto-submit, tanpa kebocoran kunci |
-| `e2e/exam.spec.ts` | End-to-end di browser nyata (desktop + Pixel 7): 70 soal dijawab, submit, review, 25 gambar & 10 MP3 tanpa 404, audio benar-benar diputar, jawaban bertahan setelah refresh, auto-submit saat waktu habis, layout mobile tanpa scroll horizontal |
+| `e2e/exam.spec.ts` | End-to-end di browser nyata (desktop 1280px, tablet iPad Mini 768px, mobile Pixel 7 412px): 70 soal dijawab, submit, review, 25 gambar & 10 MP3 tanpa 404, audio benar-benar diputar, jawaban bertahan setelah refresh, auto-submit saat waktu habis, tata letak 360–1023px tanpa scroll horizontal, dan mini-navigasi hanya tampil di samping pada ≥1024px |
+| `e2e/public.spec.ts` | Smoke test terhadap URL publik: seluruh 35 aset 200, audio diputar nyata di browser, gambar termuat (naturalWidth), refresh langsung tidak 404 |
 
-Hasil terakhir: **57/57 unit & integration test lulus**, **21/21 E2E lulus**
-(1 test layout mobile dilewati otomatis pada proyek desktop).
+Hasil terakhir: **57/57 unit & integration test lulus**, **36/36 E2E lokal lulus**
+(3 viewport), dan **8/8 E2E terhadap URL publik lulus**.
 
 ---
 
@@ -83,7 +85,9 @@ Hasil terakhir: **57/57 unit & integration test lulus**, **21/21 E2E lulus**
 ```text
 TestTrialN4/
 ├── .github/workflows/deploy.yml     # deploy otomatis ke GitHub Pages
-├── e2e/exam.spec.ts                 # Playwright end-to-end
+├── e2e/
+│   ├── exam.spec.ts                 # Playwright end-to-end (dist lokal)
+│   └── public.spec.ts               # smoke test URL publik terdeploy
 ├── public/
 │   ├── audio/q61.mp3 … q70.mp3      # 10 audio listening (MP3 asli)
 │   └── images/
@@ -111,6 +115,7 @@ TestTrialN4/
 ├── index.html
 ├── vite.config.ts
 ├── playwright.config.ts
+├── playwright.public.config.ts      # konfigurasi E2E URL publik
 ├── tsconfig.json
 ├── package.json
 └── package-lock.json
@@ -176,6 +181,9 @@ const percent = Number(((correct / 70) * 100).toFixed(1));
 sehingga aset dibangun dengan prefix yang benar. Semua path audio/gambar di aplikasi dibentuk
 dari `import.meta.env.BASE_URL` (`src/lib/assets.ts`), bukan path absolut `/audio/...`.
 
+Situs adalah satu halaman berbasis state SPA (tanpa router path), jadi refresh pada URL apa pun
+tidak menghasilkan 404 di GitHub Pages.
+
 Workflow `.github/workflows/deploy.yml` menjalankan `npm ci`, `npm test -- --run`,
 build dengan `GITHUB_PAGES=true`, lalu mengunggah `dist` ke GitHub Pages.
 
@@ -184,7 +192,10 @@ Langkah aktivasi (sekali saja, setelah repo memiliki commit di branch `main`):
 1. Buka **Settings → Pages → Build and deployment**.
 2. Pilih **Source = GitHub Actions**.
 3. Buka tab **Actions**, tunggu job *Deploy N4 Website to GitHub Pages* hijau.
-4. URL target: `https://fayyadh678.github.io/TestTrialN4/`.
+4. Situs live di `https://fayyadh678.github.io/TestTrialN4/`.
+
+Status saat ini: Pages sudah diaktifkan (`build_type=workflow`) dan workflow sudah
+berhasil deploy. Setiap `git push` ke `main` akan otomatis menerbitkan ulang.
 
 Build lokal yang setara: `npm run build:pages`.
 
@@ -195,6 +206,8 @@ Build lokal yang setara: `npm run build:pages`.
    Output Directory: `dist`; Install Command: `npm ci`.
 3. **Jangan** set `GITHUB_PAGES=true` (base harus `/`), lalu Deploy.
 4. Catat domain `*.vercel.app` yang benar-benar diterbitkan Vercel.
+
+Status saat ini: **belum dideploy ke Vercel**, jadi tidak ada URL Vercel yang diklaim.
 
 Aplikasi memakai satu halaman dengan state SPA (tanpa router path), sehingga
 refresh pada URL apa pun tidak menghasilkan 404 dan tidak memerlukan rewrite tambahan.
@@ -208,25 +221,43 @@ refresh pada URL apa pun tidak menghasilkan 404 dan tidak memerlukan rewrite tam
 | Kode sumber (workspace lokal) | `TEST TRIAL N4/TestTrialN4/` |
 | Repository | <https://github.com/fayyadh678/TestTrialN4> |
 | Artefak build | `dist/` (`index.html` + `assets/` + `audio/` + `images/`) |
-| GitHub Pages | Belum dideploy — lihat status jujur di bawah |
-| Vercel | Belum dideploy |
+| **GitHub Pages (LIVE, terverifikasi)** | **<https://fayyadh678.github.io/TestTrialN4/>** |
+| Workflow deploy | [Deploy N4 Website to GitHub Pages](https://github.com/fayyadh678/TestTrialN4/actions/workflows/deploy.yml) — run sukses |
+| Vercel | Belum dideploy (opsi kedua, didokumentasikan pada 7.2) |
 
-### Status verifikasi (jujur)
+### Bukti verifikasi publik (22 Oktober 2026)
+
+Pengujian dilakukan langsung ke <https://fayyadh678.github.io/TestTrialN4/>:
+
+| Pemeriksaan | Hasil |
+|---|---|
+| `index.html` | HTTP **200**, 947 byte, memuat `assets/index-*.js` & `assets/index-*.css` di bawah `/TestTrialN4/` |
+| 10 audio (`/TestTrialN4/audio/q61..q70.mp3`) | **200**, `audio/mp3`, 52.704–83.520 byte — seluruh 10 lolos |
+| 5 cerita (`/TestTrialN4/images/stories/s1..s5.svg`) | **200**, `image/svg+xml` |
+| 20 gambar opsi (`/TestTrialN4/images/matching/m1-a..m5-d.svg`) | **200**, `image/svg+xml` |
+| Total 35 aset diuji (`ok=35 fail=0`) | **semua 200 & non-kosong** |
+| E2E publik (`npm run test:e2e:public`, desktop + Pixel 7) | **8/8 lulus**, tanpa satu pun respons ≥400 |
+| 70 soal dijawab di situs live lalu submit + review 70 kartu | **lulus** |
+| Audio publik diputar nyata di browser (`paused=false`, `currentTime>0`, `duration>1`) | **lulus** |
+| Refresh langsung pada URL publik | **200**, bukan 404 |
+
+### Status verifikasi lokal
 
 - [x] `npm test` lulus: **57/57** (6 berkas test).
 - [x] `npm run build` sukses (TypeScript `--noEmit` + Vite, tanpa error).
-- [x] `npm run test:e2e` lulus: **21/21** di browser Chromium nyata
-      (desktop Chrome + emulasi Pixel 7), termasuk verifikasi base path `/TestTrialN4/`.
+- [x] `npm run test:e2e` lulus: **36/36** di Chromium nyata (desktop 1280px, tablet 768px,
+      mobile Pixel 7 412px), termasuk verifikasi base path `/TestTrialN4/`.
+- [x] GitHub Actions: `Install`, `Test`, `Build (GitHub Pages base path)`,
+      `Configure Pages`, `Upload dist`, dan `Deploy` semuanya **success**.
 - [x] 70 soal termuat dalam 6 kategori dengan 4 pilihan A–D dan kunci.
 - [x] 5 bacaan × 3 soal; 5 SVG cerita empat panel; 5 × 4 SVG opsi matching.
-- [x] 10 MP3 listening playable (diverifikasi lewat HTTP 200 + frame MPEG valid + pemutaran nyata di browser).
+- [x] 10 MP3 listening playable (frame MPEG valid, HTTP 200, serta pemutaran nyata di browser).
 - [x] Timer berbasis `deadlineAt`, jawaban & play count bertahan setelah refresh, auto-submit saat waktu habis.
 - [x] Tidak ada kunci/pembahasan/transkrip di DOM selama ujian (diuji otomatis).
-- [x] Responsif: diuji di 360–412px (mobile) dan desktop, tanpa scroll horizontal.
+- [x] Responsif: diuji pada 360, 412, 768, 820, 1023, dan ≥1024px, tanpa scroll horizontal;
+      mini-navigasi hanya tampil di samping pada desktop ≥1024px.
 
-URL publik belum dapat diverifikasi sebagai live karena push/deploy memerlukan
-otorisasi akun GitHub/Vercel milik pemilik repo. **Jangan mengklaim situs sudah online
-sebelum workflow GitHub Actions berhasil.**
+**Tidak ada URL Vercel yang diklaim**, karena belum ada deployment Vercel yang dilakukan.
 
 ---
 
