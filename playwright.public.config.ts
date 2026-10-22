@@ -22,7 +22,8 @@ export default defineConfig({
     video: 'off',
   },
   projects: [
-    { name: 'public-desktop', use: { ...devices['Desktop Chrome'] } },
-    { name: 'public-mobile', use: { ...devices['Pixel 7'] } },
-  ],
+      { name: 'public-chromium', use: { ...devices['Desktop Chrome'] } },
+      { name: 'public-webkit', use: { ...devices['Desktop Safari'] } },
+      { name: 'public-mobile', use: { ...devices['Pixel 7'] } },
+    ],
 });

@@ -26,9 +26,15 @@ export default defineConfig({
       use: { ...devices['Desktop Chrome'] },
     },
     {
+        name: 'webkit',
+        // WebKit mendekati perilaku Safari; penting karena spesifikasi meminta
+        // audio listening diverifikasi di Safari.
+        use: { ...devices['Desktop Safari'] },
+      },
+      {
         name: 'tablet',
         use: { ...devices['iPad Mini'], defaultBrowserType: 'chromium' },
-    },
+      },
       {
         name: 'mobile',
         use: { ...devices['Pixel 7'] },

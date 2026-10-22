@@ -36,6 +36,7 @@ Bahasa antarmuka: **Bahasa Indonesia**. Teks soal dan pilihan: **Bahasa Jepang**
 
 ```bash
 npm install
+npx playwright install chromium webkit   # sekali saja, untuk npm run test:e2e
 npm run dev          # http://localhost:5173
 ```
 
@@ -57,7 +58,7 @@ npm run preview      # menyajikan dist/ di port 4173
 ```bash
 npm test              # Vitest: 57 unit/integration test
 npm test -- --run     # sekali jalan (dipakai CI)
-npm run test:e2e      # build + Playwright (desktop + mobile), dilayani dari dist/
+npm run test:e2e      # build + Playwright (Chromium + WebKit/Safari, tablet, mobile)
 npm run test:e2e:pages # sama, tetapi base path /TestTrialN4/ (verifikasi GitHub Pages)
 npm run test:e2e:public # smoke test terhadap URL publik yang sudah dideploy
 ```
@@ -72,11 +73,12 @@ Yang diuji:
 | `tests/persistence.test.ts` | Validasi `localStorage`, penolakan JSON rusak/schema salah, sanitasi jawaban & play count, countdown berbasis deadline |
 | `tests/assets.test.ts` | Semua path aset memakai `import.meta.env.BASE_URL` (bukan `/audio/...` absolut) |
 | `tests/app.test.tsx` | Alur UI: mulai, jawab, navigasi, dialog konfirmasi, hasil, review, filter, auto-submit, tanpa kebocoran kunci |
-| `e2e/exam.spec.ts` | End-to-end di browser nyata (desktop 1280px, tablet iPad Mini 768px, mobile Pixel 7 412px): 70 soal dijawab, submit, review, 25 gambar & 10 MP3 tanpa 404, audio benar-benar diputar, jawaban bertahan setelah refresh, auto-submit saat waktu habis, tata letak 360–1023px tanpa scroll horizontal, dan mini-navigasi hanya tampil di samping pada ≥1024px |
-| `e2e/public.spec.ts` | Smoke test terhadap URL publik: seluruh 35 aset 200, audio diputar nyata di browser, gambar termuat (naturalWidth), refresh langsung tidak 404 |
+| `e2e/exam.spec.ts` | End-to-end di browser nyata (Chromium desktop 1280px & **WebKit/Safari**, tablet iPad Mini 768px, mobile Pixel 7 412px): 70 soal dijawab, submit, review, 25 gambar & 10 MP3 tanpa 404, audio benar-benar diputar, jawaban bertahan setelah refresh, auto-submit saat waktu habis, tata letak 360–1023px tanpa scroll horizontal, dan mini-navigasi hanya tampil di samping pada ≥1024px |
+| `e2e/public.spec.ts` | Smoke test terhadap URL publik (Chromium, **WebKit/Safari**, Pixel 7): seluruh 35 aset 200, audio diputar nyata di browser, gambar termuat (naturalWidth), refresh langsung tidak 404 |
 
-Hasil terakhir: **57/57 unit & integration test lulus**, **36/36 E2E lokal lulus**
-(3 viewport), dan **8/8 E2E terhadap URL publik lulus**.
+Hasil terakhir: **57/57 unit & integration test lulus**, **48/48 E2E lokal lulus**
+(4 proyek browser/viewport), dan **12/12 E2E terhadap URL publik lulus**
+(termasuk WebKit/Safari).
 
 ---
 
@@ -236,22 +238,24 @@ Pengujian dilakukan langsung ke <https://fayyadh678.github.io/TestTrialN4/>:
 | 5 cerita (`/TestTrialN4/images/stories/s1..s5.svg`) | **200**, `image/svg+xml` |
 | 20 gambar opsi (`/TestTrialN4/images/matching/m1-a..m5-d.svg`) | **200**, `image/svg+xml` |
 | Total 35 aset diuji (`ok=35 fail=0`) | **semua 200 & non-kosong** |
-| E2E publik (`npm run test:e2e:public`, desktop + Pixel 7) | **8/8 lulus**, tanpa satu pun respons ≥400 |
+| E2E publik (`npm run test:e2e:public`; Chromium, WebKit/Safari, Pixel 7) | **12/12 lulus**, tanpa satu pun respons ≥400 |
 | 70 soal dijawab di situs live lalu submit + review 70 kartu | **lulus** |
-| Audio publik diputar nyata di browser (`paused=false`, `currentTime>0`, `duration>1`) | **lulus** |
+| Audio publik diputar nyata di browser (`paused=false`, `currentTime>0`, `duration>1`) | **lulus di Chromium, WebKit/Safari, dan mobile** |
 | Refresh langsung pada URL publik | **200**, bukan 404 |
+| Review menampilkan kunci + pembahasan + 4 gambar matching (`naturalWidth=280`) + transkrip | **terverifikasi** |
 
 ### Status verifikasi lokal
 
 - [x] `npm test` lulus: **57/57** (6 berkas test).
 - [x] `npm run build` sukses (TypeScript `--noEmit` + Vite, tanpa error).
-- [x] `npm run test:e2e` lulus: **36/36** di Chromium nyata (desktop 1280px, tablet 768px,
-      mobile Pixel 7 412px), termasuk verifikasi base path `/TestTrialN4/`.
+- [x] `npm run test:e2e` lulus: **48/48** di Chromium dan **WebKit (mesin Safari)**, plus
+      emulasi tablet iPad Mini 768px dan Pixel 7 412px, termasuk verifikasi base path `/TestTrialN4/`.
 - [x] GitHub Actions: `Install`, `Test`, `Build (GitHub Pages base path)`,
       `Configure Pages`, `Upload dist`, dan `Deploy` semuanya **success**.
 - [x] 70 soal termuat dalam 6 kategori dengan 4 pilihan A–D dan kunci.
 - [x] 5 bacaan × 3 soal; 5 SVG cerita empat panel; 5 × 4 SVG opsi matching.
-- [x] 10 MP3 listening playable (frame MPEG valid, HTTP 200, serta pemutaran nyata di browser).
+- [x] 10 MP3 listening playable (frame MPEG valid, HTTP 200, serta pemutaran nyata di browser
+      Chromium, WebKit/Safari, dan mobile).
 - [x] Timer berbasis `deadlineAt`, jawaban & play count bertahan setelah refresh, auto-submit saat waktu habis.
 - [x] Tidak ada kunci/pembahasan/transkrip di DOM selama ujian (diuji otomatis).
 - [x] Responsif: diuji pada 360, 412, 768, 820, 1023, dan ≥1024px, tanpa scroll horizontal;
@@ -290,6 +294,10 @@ Regenerasi: `npm run assets:images` (skrip juga memvalidasi XML dan menolak atri
 - Karena ini situs statis, data yang dibundel ke klien (termasuk kunci jawaban) secara teknis
   dapat ditemukan lewat developer tools. Ini latihan, bukan ujian terproktor.
 - Tidak ada backend, database, atau layanan berbayar.
+- Batas 2 kali pemutaran audio adalah pembatas antarmuka untuk latihan, bukan proteksi anti-curang.
+- Halaman tes Safari memakai mesin **WebKit** Playwright, bukan Safari asli di macOS/iOS.
+  Perilaku keduanya sangat dekat, namun verifikasi akhir pada perangkat Safari nyata
+  tetap disarankan.
 
 ---
 
