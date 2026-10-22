@@ -1,0 +1,62 @@
+[
+  {
+    "id": "S1",
+    "path": "images/stories/s1.svg",
+    "name": "Payung sebelum sekolah",
+    "panels": [
+      "Pagi: anak laki-laki berseragam sekolah berdiri di rumah, terlihat awan gelap di jendela.",
+      "Ibu menyerahkan payung biru terlipat; anak memasukkannya ke tas sekolah.",
+      "Dalam perjalanan ke sekolah hujan turun; anak mengambil payung dari tas.",
+      "Anak tiba di pintu sekolah sambil memegang payung biru terbuka."
+    ],
+    "visualQuestion": "Apa yang anak laki-laki masukkan ke tas sebelum berangkat?"
+  },
+  {
+    "id": "S2",
+    "path": "images/stories/s2.svg",
+    "name": "Membuat salad",
+    "panels": [
+      "Perempuan memakai celemek mencuci tomat merah di wastafel.",
+      "Perempuan memotong tomat di papan potong dengan pisau.",
+      "Perempuan memasukkan tomat dan selada ke dalam mangkuk.",
+      "Perempuan memakan salad dari mangkuk dengan garpu."
+    ],
+    "visualQuestion": "Apa yang dipotong perempuan?"
+  },
+  {
+    "id": "S3",
+    "path": "images/stories/s3.svg",
+    "name": "Mencari kunci",
+    "panels": [
+      "Pria berdiri di pintu rumah mencari kunci dengan saku kosong.",
+      "Pria membuka dan mengecek tas, tidak ada kunci.",
+      "Pria berjongkok dan menemukan kunci warna kuning di bawah meja.",
+      "Pria keluar rumah dengan kunci di tangan."
+    ],
+    "visualQuestion": "Di mana kunci ditemukan?"
+  },
+  {
+    "id": "S4",
+    "path": "images/stories/s4.svg",
+    "name": "Meminjam buku",
+    "panels": [
+      "Perempuan muda menunggu bus di halte.",
+      "Bus berhenti di depan gedung perpustakaan dengan ikon buku (tanpa tulisan yang mengandung jawaban).",
+      "Perempuan meminjam satu buku dari meja pustakawan.",
+      "Perempuan membaca buku tersebut di rumah."
+    ],
+    "visualQuestion": "Di mana perempuan meminjam buku?"
+  },
+  {
+    "id": "S5",
+    "path": "images/stories/s5.svg",
+    "name": "Belanja bersama ayah",
+    "panels": [
+      "Ayah mengambil keranjang belanja kosong di pintu supermarket.",
+      "Ayah memasukkan satu kotak susu putih ke keranjang.",
+      "Ayah menaruh kotak berisi telur ke keranjang yang sudah ada susu.",
+      "Ayah membayar kasir; susu dan telur terlihat di konter."
+    ],
+    "visualQuestion": "Apa yang dibeli sebelum membayar?"
+  }
+]

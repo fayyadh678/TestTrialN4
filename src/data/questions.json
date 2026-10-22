@@ -1,0 +1,947 @@
+[
+  {
+    "id": 1,
+    "type": "vocabulary",
+    "prompt": "「駅」の読み方はどれですか。",
+    "options": {
+      "A": "いけ",
+      "B": "えき",
+      "C": "やく",
+      "D": "おき"
+    },
+    "answer": "B",
+    "explanation": "駅（えき） berarti stasiun."
+  },
+  {
+    "id": 2,
+    "type": "vocabulary",
+    "prompt": "「病院」の読み方はどれですか。",
+    "options": {
+      "A": "びょいん",
+      "B": "びょうえん",
+      "C": "びょういん",
+      "D": "びよういん"
+    },
+    "answer": "C",
+    "explanation": "病院（びょういん） berarti rumah sakit."
+  },
+  {
+    "id": 3,
+    "type": "vocabulary",
+    "prompt": "「約束」の読み方はどれですか。",
+    "options": {
+      "A": "やくそく",
+      "B": "やっそく",
+      "C": "よくそく",
+      "D": "やくぞく"
+    },
+    "answer": "A",
+    "explanation": "約束（やくそく） berarti janji."
+  },
+  {
+    "id": 4,
+    "type": "vocabulary",
+    "prompt": "「地図」の読み方はどれですか。",
+    "options": {
+      "A": "ちと",
+      "B": "じと",
+      "C": "じず",
+      "D": "ちず"
+    },
+    "answer": "D",
+    "explanation": "地図（ちず） berarti peta."
+  },
+  {
+    "id": 5,
+    "type": "vocabulary",
+    "prompt": "「運転」の読み方はどれですか。",
+    "options": {
+      "A": "うんてん",
+      "B": "うんでん",
+      "C": "うんどう",
+      "D": "おんてん"
+    },
+    "answer": "A",
+    "explanation": "運転（うんてん） berarti mengemudi."
+  },
+  {
+    "id": 6,
+    "type": "vocabulary",
+    "prompt": "「料理」の読み方はどれですか。",
+    "options": {
+      "A": "りょり",
+      "B": "りょうり",
+      "C": "りょうに",
+      "D": "りょくり"
+    },
+    "answer": "B",
+    "explanation": "料理（りょうり） berarti masakan/memasak."
+  },
+  {
+    "id": 7,
+    "type": "vocabulary",
+    "prompt": "「あたらしい」の正しい漢字はどれですか。",
+    "options": {
+      "A": "親しい",
+      "B": "古しい",
+      "C": "新しい",
+      "D": "楽しい"
+    },
+    "answer": "C",
+    "explanation": "新しい（あたらしい） artinya baru."
+  },
+  {
+    "id": 8,
+    "type": "vocabulary",
+    "prompt": "「じてんしゃ」の正しい漢字はどれですか。",
+    "options": {
+      "A": "自動車",
+      "B": "自転車",
+      "C": "電車",
+      "D": "自転校"
+    },
+    "answer": "B",
+    "explanation": "自転車（じてんしゃ） berarti sepeda."
+  },
+  {
+    "id": 9,
+    "type": "vocabulary",
+    "prompt": "「かいしゃ」の正しい漢字はどれですか。",
+    "options": {
+      "A": "会社",
+      "B": "会話",
+      "C": "会社員",
+      "D": "海車"
+    },
+    "answer": "A",
+    "explanation": "会社（かいしゃ） berarti perusahaan."
+  },
+  {
+    "id": 10,
+    "type": "vocabulary",
+    "prompt": "「てんき」の正しい漢字はどれですか。",
+    "options": {
+      "A": "電気",
+      "B": "天気",
+      "C": "元気",
+      "D": "天木"
+    },
+    "answer": "B",
+    "explanation": "天気（てんき） berarti cuaca."
+  },
+  {
+    "id": 11,
+    "type": "vocabulary",
+    "prompt": "今日はとても＿＿です。コートを着ます。",
+    "options": {
+      "A": "あつい",
+      "B": "からい",
+      "C": "さむい",
+      "D": "あかるい"
+    },
+    "answer": "C",
+    "explanation": "コート dipakai karena cuaca dingin, jadi 寒い（さむい）."
+  },
+  {
+    "id": 12,
+    "type": "vocabulary",
+    "prompt": "明日は試験です。今夜は日本語を＿＿。",
+    "options": {
+      "A": "うります",
+      "B": "およぎます",
+      "C": "あそびます",
+      "D": "べんきょうします"
+    },
+    "answer": "D",
+    "explanation": "Sebelum ujian seseorang belajar: 勉強します（べんきょうします）."
+  },
+  {
+    "id": 13,
+    "type": "vocabulary",
+    "prompt": "今日は電車が止まっていたので、学校まで＿＿行きました。",
+    "options": {
+      "A": "あるいて",
+      "B": "ねて",
+      "C": "およいで",
+      "D": "うたって"
+    },
+    "answer": "A",
+    "explanation": "歩いて（あるいて） berarti dengan berjalan kaki."
+  },
+  {
+    "id": 14,
+    "type": "vocabulary",
+    "prompt": "熱があるので、＿＿へ行きます。",
+    "options": {
+      "A": "ぎんこう",
+      "B": "びょういん",
+      "C": "えき",
+      "D": "こうえん"
+    },
+    "answer": "B",
+    "explanation": "Saat demam, tempat yang sesuai adalah 病院（びょういん）."
+  },
+  {
+    "id": 15,
+    "type": "vocabulary",
+    "prompt": "日曜日なので、その銀行は＿＿います。",
+    "options": {
+      "A": "あそんで",
+      "B": "おぼえて",
+      "C": "しまって",
+      "D": "すわって"
+    },
+    "answer": "C",
+    "explanation": "閉まっています（しまっています） berarti dalam keadaan tutup."
+  },
+  {
+    "id": 16,
+    "type": "vocabulary",
+    "prompt": "この道は車が多いので、＿＿です。",
+    "options": {
+      "A": "あんぜん",
+      "B": "しずか",
+      "C": "ひま",
+      "D": "あぶない"
+    },
+    "answer": "D",
+    "explanation": "Bahaya karena banyak kendaraan: 危ない（あぶない）."
+  },
+  {
+    "id": 17,
+    "type": "vocabulary",
+    "prompt": "「とても」にいちばん近い意味はどれですか。",
+    "options": {
+      "A": "すごく",
+      "B": "いつも",
+      "C": "ゆっくり",
+      "D": "ぜんぜん"
+    },
+    "answer": "A",
+    "explanation": "とても dan すごく sama-sama menyatakan sangat."
+  },
+  {
+    "id": 18,
+    "type": "vocabulary",
+    "prompt": "「少し」にいちばん近い意味はどれですか。",
+    "options": {
+      "A": "たくさん",
+      "B": "ちょっと",
+      "C": "ぜんぶ",
+      "D": "いつも"
+    },
+    "answer": "B",
+    "explanation": "少し（すこし） sepadan dengan ちょっと, sedikit."
+  },
+  {
+    "id": 19,
+    "type": "vocabulary",
+    "prompt": "「きれい」にいちばん近い意味はどれですか。",
+    "options": {
+      "A": "うるさい",
+      "B": "おそい",
+      "C": "うつくしい",
+      "D": "にがい"
+    },
+    "answer": "C",
+    "explanation": "きれい dan 美しい（うつくしい） dapat berarti indah."
+  },
+  {
+    "id": 20,
+    "type": "vocabulary",
+    "prompt": "「図書館」は何をするところですか。",
+    "options": {
+      "A": "電車に乗るところ",
+      "B": "病気をみてもらうところ",
+      "C": "食べ物を買うところ",
+      "D": "本を読んだり借りたりするところ"
+    },
+    "answer": "D",
+    "explanation": "図書館（としょかん） adalah perpustakaan: tempat membaca dan meminjam buku."
+  },
+  {
+    "id": 21,
+    "type": "grammar",
+    "prompt": "寝る＿＿、歯をみがきます。",
+    "options": {
+      "A": "あとで",
+      "B": "まえに",
+      "C": "ながら",
+      "D": "までに"
+    },
+    "answer": "B",
+    "explanation": "V bentuk kamus + 前に: sebelum tidur menyikat gigi."
+  },
+  {
+    "id": 22,
+    "type": "grammar",
+    "prompt": "ごはんを食べた＿＿、薬を飲んでください。",
+    "options": {
+      "A": "あとで",
+      "B": "まえに",
+      "C": "あいだ",
+      "D": "ながら"
+    },
+    "answer": "A",
+    "explanation": "V bentuk lampau + 後で: setelah makan, minum obat."
+  },
+  {
+    "id": 23,
+    "type": "grammar",
+    "prompt": "友だちと＿＿、駅まで歩きました。",
+    "options": {
+      "A": "話すまで",
+      "B": "話すので",
+      "C": "話しながら",
+      "D": "話したこと"
+    },
+    "answer": "C",
+    "explanation": "Bentuk masu tanpa ます + ながら: berjalan sambil mengobrol."
+  },
+  {
+    "id": 24,
+    "type": "grammar",
+    "prompt": "かぜをひいた＿＿、学校を休みました。",
+    "options": {
+      "A": "のに",
+      "B": "でも",
+      "C": "まで",
+      "D": "ので"
+    },
+    "answer": "D",
+    "explanation": "ので menandakan alasan: tidak masuk sekolah karena flu."
+  },
+  {
+    "id": 25,
+    "type": "grammar",
+    "prompt": "私は日本へ行った＿＿があります。",
+    "options": {
+      "A": "こと",
+      "B": "もの",
+      "C": "ため",
+      "D": "ばかり"
+    },
+    "answer": "A",
+    "explanation": "Vた + ことがある: pernah melakukan sesuatu."
+  },
+  {
+    "id": 26,
+    "type": "grammar",
+    "prompt": "明日は早く起き＿＿。",
+    "options": {
+      "A": "てもいいです",
+      "B": "なければなりません",
+      "C": "たことがあります",
+      "D": "そうです"
+    },
+    "answer": "B",
+    "explanation": "起きなければなりません berarti harus bangun."
+  },
+  {
+    "id": 27,
+    "type": "grammar",
+    "prompt": "来年、日本で勉強する＿＿です。",
+    "options": {
+      "A": "ながら",
+      "B": "ところ",
+      "C": "つもり",
+      "D": "だけ"
+    },
+    "answer": "C",
+    "explanation": "つもりです menyatakan niat/rencana."
+  },
+  {
+    "id": 28,
+    "type": "grammar",
+    "prompt": "昨日、先生に＿＿。とてもうれしかったです。",
+    "options": {
+      "A": "ほめます",
+      "B": "ほめる",
+      "C": "ほめて",
+      "D": "ほめられました"
+    },
+    "answer": "D",
+    "explanation": "先生にほめられました adalah bentuk pasif: dipuji oleh guru."
+  },
+  {
+    "id": 29,
+    "type": "grammar",
+    "prompt": "毎日練習したので、漢字が書ける＿＿なりました。",
+    "options": {
+      "A": "ように",
+      "B": "そうに",
+      "C": "ほどに",
+      "D": "まえに"
+    },
+    "answer": "A",
+    "explanation": "Kemampuan baru: V potensial + ようになりました."
+  },
+  {
+    "id": 30,
+    "type": "grammar",
+    "prompt": "窓が＿＿います。寒いので、閉めてください。",
+    "options": {
+      "A": "あけて",
+      "B": "あいて",
+      "C": "あける",
+      "D": "あいた"
+    },
+    "answer": "B",
+    "explanation": "窓が開いています menunjukkan jendela sedang dalam keadaan terbuka."
+  },
+  {
+    "id": 31,
+    "type": "grammar",
+    "prompt": "電車にかばんを忘れて＿＿。",
+    "options": {
+      "A": "みます",
+      "B": "あります",
+      "C": "しまいました",
+      "D": "おきます"
+    },
+    "answer": "C",
+    "explanation": "～てしまいました menunjukkan kejadian yang disesali/tidak disengaja."
+  },
+  {
+    "id": 32,
+    "type": "grammar",
+    "prompt": "明日は雨が降る＿＿。かさを持っていきましょう。",
+    "options": {
+      "A": "しなければなりません",
+      "B": "つもりです",
+      "C": "ことができます",
+      "D": "かもしれません"
+    },
+    "answer": "D",
+    "explanation": "かもしれません berarti mungkin; sesuai untuk perkiraan hujan."
+  },
+  {
+    "id": 33,
+    "type": "grammar",
+    "prompt": "このかばんは私には重＿＿。もっと軽いのがほしいです。",
+    "options": {
+      "A": "すぎます",
+      "B": "ながら",
+      "C": "そうです",
+      "D": "てもいいです"
+    },
+    "answer": "A",
+    "explanation": "重い menjadi 重すぎます: terlalu berat; い dibuang sebelum すぎる."
+  },
+  {
+    "id": 34,
+    "type": "grammar",
+    "prompt": "ここで写真を撮っ＿＿いいですか。",
+    "options": {
+      "A": "たら",
+      "B": "ても",
+      "C": "たり",
+      "D": "ては"
+    },
+    "answer": "B",
+    "explanation": "～てもいいですか digunakan meminta izin."
+  },
+  {
+    "id": 35,
+    "type": "grammar",
+    "prompt": "正しい文はどれですか。",
+    "options": {
+      "A": "私は毎朝七時を起きます。",
+      "B": "私は毎朝七時で起きます。",
+      "C": "私は毎朝七時に起きます。",
+      "D": "私は毎朝七時が起きます。"
+    },
+    "answer": "C",
+    "explanation": "Penanda waktu spesifik untuk bangun adalah に: 七時に起きます."
+  },
+  {
+    "id": 36,
+    "type": "reading",
+    "prompt": "山田さんは、ふつう何曜日にアルバイトをしますか。",
+    "options": {
+      "A": "月・水・金",
+      "B": "火・木・土",
+      "C": "月・火・金",
+      "D": "水・土・日"
+    },
+    "answer": "A",
+    "explanation": "Paragraf menyebut 月曜日・水曜日・金曜日.",
+    "passageId": "P1"
+  },
+  {
+    "id": 37,
+    "type": "reading",
+    "prompt": "山田さんは、今週の金曜日のかわりに何曜日に働きますか。",
+    "options": {
+      "A": "火曜日",
+      "B": "木曜日",
+      "C": "土曜日",
+      "D": "日曜日"
+    },
+    "answer": "B",
+    "explanation": "Karena Jumat ada ujian, ia menggantinya pada Kamis.",
+    "passageId": "P1"
+  },
+  {
+    "id": 38,
+    "type": "reading",
+    "prompt": "山田さんは、パン屋まで何で行きますか。",
+    "options": {
+      "A": "歩いて",
+      "B": "バスで",
+      "C": "自転車で",
+      "D": "電車で"
+    },
+    "answer": "C",
+    "explanation": "Ia selalu pergi dengan sepeda: 自転車で.",
+    "passageId": "P1"
+  },
+  {
+    "id": 39,
+    "type": "reading",
+    "prompt": "学生はどこに集まりますか。",
+    "options": {
+      "A": "博物館の前",
+      "B": "駅の前",
+      "C": "学校の教室",
+      "D": "学校の正門の前"
+    },
+    "answer": "D",
+    "explanation": "Titik kumpul di depan gerbang utama sekolah.",
+    "passageId": "P2"
+  },
+  {
+    "id": 40,
+    "type": "reading",
+    "prompt": "学生は何を持っていきますか。",
+    "options": {
+      "A": "昼ごはんと飲み物",
+      "B": "入場券だけ",
+      "C": "かさと本",
+      "D": "ノートだけ"
+    },
+    "answer": "A",
+    "explanation": "Pengumuman meminta membawa makan siang dan minuman.",
+    "passageId": "P2"
+  },
+  {
+    "id": 41,
+    "type": "reading",
+    "prompt": "雨が降ったら、どうしますか。",
+    "options": {
+      "A": "学校で勉強します",
+      "B": "博物館へ行きます",
+      "C": "旅行をやめます",
+      "D": "来週の日曜日に行きます"
+    },
+    "answer": "B",
+    "explanation": "雨が降っても行きます = tetap berangkat walaupun hujan.",
+    "passageId": "P2"
+  },
+  {
+    "id": 42,
+    "type": "reading",
+    "prompt": "この図書館はいつ休みですか。",
+    "options": {
+      "A": "月曜日",
+      "B": "土曜日",
+      "C": "日曜日",
+      "D": "金曜日"
+    },
+    "answer": "C",
+    "explanation": "Tertulis 日曜日は休みです.",
+    "passageId": "P3"
+  },
+  {
+    "id": 43,
+    "type": "reading",
+    "prompt": "一人で何冊まで本を借りられますか。",
+    "options": {
+      "A": "一冊",
+      "B": "二冊",
+      "C": "四冊",
+      "D": "三冊"
+    },
+    "answer": "D",
+    "explanation": "Satu orang dapat meminjam maksimum tiga buku.",
+    "passageId": "P3"
+  },
+  {
+    "id": 44,
+    "type": "reading",
+    "prompt": "本を返すとき、どこへ持っていきますか。",
+    "options": {
+      "A": "一階のカウンター",
+      "B": "二階の教室",
+      "C": "駅の前",
+      "D": "受付の外"
+    },
+    "answer": "A",
+    "explanation": "Buku dikembalikan ke counter lantai satu.",
+    "passageId": "P3"
+  },
+  {
+    "id": 45,
+    "type": "reading",
+    "prompt": "二人が見る映画は何時からですか。",
+    "options": {
+      "A": "午後二時",
+      "B": "午後三時",
+      "C": "午後四時",
+      "D": "午前十時"
+    },
+    "answer": "B",
+    "explanation": "Film mulai pukul 15.00.",
+    "passageId": "P4"
+  },
+  {
+    "id": 46,
+    "type": "reading",
+    "prompt": "二人は何時に会いますか。",
+    "options": {
+      "A": "午後一時半",
+      "B": "午後三時半",
+      "C": "午後二時半",
+      "D": "午前九時"
+    },
+    "answer": "C",
+    "explanation": "Mereka berjanji bertemu jam 14.30, bukan jam mulai film.",
+    "passageId": "P4"
+  },
+  {
+    "id": 47,
+    "type": "reading",
+    "prompt": "二人はどこで会いますか。",
+    "options": {
+      "A": "駅の改札口",
+      "B": "学校の正門",
+      "C": "本屋の前",
+      "D": "映画館の入り口"
+    },
+    "answer": "D",
+    "explanation": "Titik pertemuan adalah pintu masuk bioskop.",
+    "passageId": "P4"
+  },
+  {
+    "id": 48,
+    "type": "reading",
+    "prompt": "「私」はだれと海へ行きましたか。",
+    "options": {
+      "A": "弟",
+      "B": "姉",
+      "C": "友だち",
+      "D": "父"
+    },
+    "answer": "A",
+    "explanation": "Penulis pergi bersama adik laki-lakinya: 弟.",
+    "passageId": "P5"
+  },
+  {
+    "id": 49,
+    "type": "reading",
+    "prompt": "駅から海まで、どうやって行きましたか。",
+    "options": {
+      "A": "バスで十分",
+      "B": "二十分歩いて",
+      "C": "タクシーで五分",
+      "D": "自転車で二十分"
+    },
+    "answer": "B",
+    "explanation": "Dari stasiun mereka berjalan kaki selama 20 menit.",
+    "passageId": "P5"
+  },
+  {
+    "id": 50,
+    "type": "reading",
+    "prompt": "「私」はなぜ泳ぎませんでしたか。",
+    "options": {
+      "A": "時間がなかったから",
+      "B": "泳ぐのが好きだから",
+      "C": "水が冷たかったから",
+      "D": "雨が降っていたから"
+    },
+    "answer": "C",
+    "explanation": "Penulis tidak berenang karena air dingin.",
+    "passageId": "P5"
+  },
+  {
+    "id": 51,
+    "type": "story_image",
+    "prompt": "学校へ行く前に、男の子は何をかばんに入れましたか。",
+    "options": {
+      "A": "本",
+      "B": "かさ",
+      "C": "くつ",
+      "D": "ぼうし"
+    },
+    "answer": "B",
+    "explanation": "Panel kedua menunjukkan ibu memberi payung dan anak memasukkannya ke tas.",
+    "sceneId": "S1"
+  },
+  {
+    "id": 52,
+    "type": "story_image",
+    "prompt": "女の人は何を切りましたか。",
+    "options": {
+      "A": "パン",
+      "B": "にんじん",
+      "C": "トマト",
+      "D": "りんご"
+    },
+    "answer": "C",
+    "explanation": "Panel kedua menunjukkan tomat dipotong.",
+    "sceneId": "S2"
+  },
+  {
+    "id": 53,
+    "type": "story_image",
+    "prompt": "男の人は、かぎをどこで見つけましたか。",
+    "options": {
+      "A": "かばんの中",
+      "B": "ポケットの中",
+      "C": "いすの上",
+      "D": "つくえの下"
+    },
+    "answer": "D",
+    "explanation": "Panel ketiga memperlihatkan kunci di bawah meja.",
+    "sceneId": "S3"
+  },
+  {
+    "id": 54,
+    "type": "story_image",
+    "prompt": "女の人はどこで本を借りましたか。",
+    "options": {
+      "A": "図書館",
+      "B": "駅",
+      "C": "病院",
+      "D": "スーパー"
+    },
+    "answer": "A",
+    "explanation": "Panel ketiga menunjukkan perempuan meminjam buku di perpustakaan.",
+    "sceneId": "S4"
+  },
+  {
+    "id": 55,
+    "type": "story_image",
+    "prompt": "お父さんは何を買いましたか。",
+    "options": {
+      "A": "パンと水",
+      "B": "牛乳と卵",
+      "C": "魚と肉",
+      "D": "りんごとバナナ"
+    },
+    "answer": "B",
+    "explanation": "Panel kedua dan ketiga menunjukkan susu dan telur.",
+    "sceneId": "S5"
+  },
+  {
+    "id": 56,
+    "type": "match_image",
+    "prompt": "文に合う絵を選んでください。",
+    "options": {
+      "A": "画像A",
+      "B": "画像B",
+      "C": "画像C",
+      "D": "画像D"
+    },
+    "answer": "C",
+    "explanation": "Gambar C menampilkan laki-laki berjalan dengan payung merah.",
+    "matchingId": "M1"
+  },
+  {
+    "id": 57,
+    "type": "match_image",
+    "prompt": "文に合う絵を選んでください。",
+    "options": {
+      "A": "画像A",
+      "B": "画像B",
+      "C": "画像C",
+      "D": "画像D"
+    },
+    "answer": "A",
+    "explanation": "Gambar A memiliki dua apel dan satu pisang di atas meja.",
+    "matchingId": "M2"
+  },
+  {
+    "id": 58,
+    "type": "match_image",
+    "prompt": "文に合う絵を選んでください。",
+    "options": {
+      "A": "画像A",
+      "B": "画像B",
+      "C": "画像C",
+      "D": "画像D"
+    },
+    "answer": "D",
+    "explanation": "Gambar D menunjukkan kucing tidur di bawah kursi.",
+    "matchingId": "M3"
+  },
+  {
+    "id": 59,
+    "type": "match_image",
+    "prompt": "文に合う絵を選んでください。",
+    "options": {
+      "A": "画像A",
+      "B": "画像B",
+      "C": "画像C",
+      "D": "画像D"
+    },
+    "answer": "B",
+    "explanation": "Gambar B menggambarkan anak laki-laki bersepeda dan anak perempuan berjalan.",
+    "matchingId": "M4"
+  },
+  {
+    "id": 60,
+    "type": "match_image",
+    "prompt": "文に合う絵を選んでください。",
+    "options": {
+      "A": "画像A",
+      "B": "画像B",
+      "C": "画像C",
+      "D": "画像D"
+    },
+    "answer": "C",
+    "explanation": "Gambar C: baju biru di kiri, putih di kanan.",
+    "matchingId": "M5"
+  },
+  {
+    "id": 61,
+    "type": "listening",
+    "prompt": "女の人は何を買いますか。",
+    "options": {
+      "A": "卵だけ",
+      "B": "パンだけ",
+      "C": "パンと卵",
+      "D": "牛乳"
+    },
+    "answer": "B",
+    "explanation": "Awalnya ingin membeli roti dan telur, tetapi telur ada di rumah. Jadi hanya roti.",
+    "audioId": "L1"
+  },
+  {
+    "id": 62,
+    "type": "listening",
+    "prompt": "男の人は何時に駅に着きますか。",
+    "options": {
+      "A": "七時",
+      "B": "七時十五分",
+      "C": "七時半",
+      "D": "八時"
+    },
+    "answer": "C",
+    "explanation": "Berangkat jam 07.00, berjalan 30 menit, sampai 07.30.",
+    "audioId": "L2"
+  },
+  {
+    "id": 63,
+    "type": "listening",
+    "prompt": "女の人は明日何をしますか。",
+    "options": {
+      "A": "公園で走ります",
+      "B": "買い物に行きます",
+      "C": "映画を見ます",
+      "D": "家で本を読みます"
+    },
+    "answer": "D",
+    "explanation": "Karena besok diperkirakan hujan, perempuan akan membaca di rumah.",
+    "audioId": "L3"
+  },
+  {
+    "id": 64,
+    "type": "listening",
+    "prompt": "二人はどこで会いますか。",
+    "options": {
+      "A": "駅の入り口",
+      "B": "図書館の前",
+      "C": "スーパーの前",
+      "D": "学校の入り口"
+    },
+    "answer": "A",
+    "explanation": "Lokasi berubah dari depan perpustakaan ke pintu masuk stasiun.",
+    "audioId": "L4"
+  },
+  {
+    "id": 65,
+    "type": "listening",
+    "prompt": "男の人は何をなくしましたか。",
+    "options": {
+      "A": "鍵",
+      "B": "財布",
+      "C": "携帯電話",
+      "D": "本"
+    },
+    "answer": "B",
+    "explanation": "Dompet tidak ada; telepon dan kunci masih ada.",
+    "audioId": "L5"
+  },
+  {
+    "id": 66,
+    "type": "listening",
+    "prompt": "いちばんいい返事を選んでください。",
+    "options": {
+      "A": "はい、明日です。",
+      "B": "三冊あります。",
+      "C": "いいえ、よくわかりません。",
+      "D": "学校に行きます。"
+    },
+    "answer": "C",
+    "explanation": "Pertanyaan guru tentang memahami bacaan kanji; respons yang relevan adalah belum mengerti.",
+    "audioId": "L6"
+  },
+  {
+    "id": 67,
+    "type": "listening",
+    "prompt": "いちばんいい返事を選んでください。",
+    "options": {
+      "A": "今日は寒いです。",
+      "B": "窓があります。",
+      "C": "九時からです。",
+      "D": "ええ、どうぞ。"
+    },
+    "answer": "D",
+    "explanation": "「～てもいいですか」 meminta izin; 「ええ、どうぞ」 mengizinkan.",
+    "audioId": "L7"
+  },
+  {
+    "id": 68,
+    "type": "listening",
+    "prompt": "男の人は何色のシャツを着ますか。",
+    "options": {
+      "A": "青いシャツ",
+      "B": "白いシャツ",
+      "C": "黒いシャツ",
+      "D": "赤いシャツ"
+    },
+    "answer": "A",
+    "explanation": "Kemeja putih kotor, jadi ia memilih kemeja biru.",
+    "audioId": "L8"
+  },
+  {
+    "id": 69,
+    "type": "listening",
+    "prompt": "学生は最初に何をしますか。",
+    "options": {
+      "A": "昨日のことを書きます",
+      "B": "名前を書きます",
+      "C": "作文を出します",
+      "D": "本を読みます"
+    },
+    "answer": "B",
+    "explanation": "Instruksi pertama adalah menulis nama di kertas, baru menulis karangan.",
+    "audioId": "L9"
+  },
+  {
+    "id": 70,
+    "type": "listening",
+    "prompt": "二人はいつ山へ行きますか。",
+    "options": {
+      "A": "金曜日",
+      "B": "土曜日",
+      "C": "日曜日",
+      "D": "月曜日"
+    },
+    "answer": "C",
+    "explanation": "Rencana semula Sabtu, diubah menjadi Minggu karena cuaca.",
+    "audioId": "L10"
+  }
+]

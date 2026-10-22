@@ -1,0 +1,52 @@
+[
+  {
+    "id": "M1",
+    "prompt": "男の人が赤いかさを持って歩いています。",
+    "images": {
+      "A": "Laki-laki berjalan memegang payung biru.",
+      "B": "Perempuan berjalan memegang payung merah.",
+      "C": "Laki-laki berjalan memegang payung merah.",
+      "D": "Laki-laki berjalan tanpa payung, membawa tas merah."
+    }
+  },
+  {
+    "id": "M2",
+    "prompt": "つくえの上に、りんごが二つとバナナが一つあります。",
+    "images": {
+      "A": "Di atas meja 2 apel merah dan 1 pisang kuning.",
+      "B": "Di atas meja 1 apel merah dan 2 pisang kuning.",
+      "C": "Di atas meja 3 apel merah, tanpa pisang.",
+      "D": "Di bawah meja 2 apel merah dan 1 pisang kuning."
+    }
+  },
+  {
+    "id": "M3",
+    "prompt": "ねこがいすの下で寝ています。",
+    "images": {
+      "A": "Kucing tidur di atas kursi.",
+      "B": "Anjing tidur di bawah kursi.",
+      "C": "Kucing tidur di bawah meja, bukan kursi.",
+      "D": "Kucing tidur di bawah kursi."
+    }
+  },
+  {
+    "id": "M4",
+    "prompt": "男の子は自転車に乗っています。女の子は歩いています。",
+    "images": {
+      "A": "Anak perempuan mengendarai sepeda, anak laki-laki berjalan.",
+      "B": "Anak laki-laki mengendarai sepeda, anak perempuan berjalan.",
+      "C": "Keduanya mengendarai sepeda.",
+      "D": "Keduanya berjalan."
+    }
+  },
+  {
+    "id": "M5",
+    "prompt": "左の人は青いシャツを着ています。右の人は白いシャツを着ています。",
+    "images": {
+      "A": "Kiri kemeja putih, kanan kemeja biru.",
+      "B": "Kiri kemeja merah, kanan kemeja putih.",
+      "C": "Kiri kemeja biru, kanan kemeja putih.",
+      "D": "Kiri kemeja biru, kanan kemeja kuning."
+    }
+  }
+]

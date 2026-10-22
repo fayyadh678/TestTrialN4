@@ -1,0 +1,40 @@
+{
+  "name": "test-trial-n4",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Simulasi JLPT N4 - website latihan 70 soal (tidak resmi)",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "build:pages": "cross-env GITHUB_PAGES=true npm run build",
+    "preview": "vite preview --port 4173",
+    "test": "vitest",
+    "test:e2e": "npm run build && playwright test",
+    "test:e2e:pages": "cross-env GITHUB_PAGES=true npm run build && cross-env E2E_PAGES_BASE=true playwright test",
+    "typecheck": "tsc --noEmit",
+    "assets:images": "node scripts/generate-images.mjs && node scripts/check-images.mjs",
+    "assets:audio": "node scripts/generate-audio.mjs",
+    "data:extract": "node scripts/extract-data.mjs"
+  },
+  "dependencies": {
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.56.1",
+    "@testing-library/dom": "^10.4.1",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/node": "^24.9.1",
+    "@types/react": "^19.1.16",
+    "@types/react-dom": "^19.1.9",
+    "@vitejs/plugin-react": "^5.0.4",
+    "cross-env": "^10.1.0",
+    "jsdom": "^27.0.0",
+    "node-edge-tts": "^1.2.10",
+    "typescript": "^5.9.3",
+    "vite": "^7.1.12",
+    "vitest": "^3.2.4"
+  }
+}

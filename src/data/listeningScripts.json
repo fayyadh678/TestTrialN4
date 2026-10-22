@@ -1,0 +1,72 @@
+[
+  {
+    "id": "L1",
+    "file": "audio/q61.mp3",
+    "task": "point",
+    "script": "女の人：パンと卵を買おうと思いましたが、卵は家にありました。だから、パンだけ買います。",
+    "speakerNotes": "Perempuan dewasa, tenang, jeda setelah ありました。"
+  },
+  {
+    "id": "L2",
+    "file": "audio/q62.mp3",
+    "task": "point",
+    "script": "男の人：七時に家を出ます。駅までは歩いて三十分です。",
+    "speakerNotes": "Laki-laki dewasa, jelas pada 七時 dan 三十分."
+  },
+  {
+    "id": "L3",
+    "file": "audio/q63.mp3",
+    "task": "task",
+    "script": "女の人：明日は雨が降るそうです。公園へは行かないで、家で本を読みます。",
+    "speakerNotes": "Perempuan dewasa, nada sehari-hari."
+  },
+  {
+    "id": "L4",
+    "file": "audio/q64.mp3",
+    "task": "task",
+    "script": "女の人：明日は図書館の前で会いましょう。\n男の人：明日は図書館が休みですよ。駅の入り口はどうですか。\n女の人：いいですね。そこにしましょう。",
+    "speakerNotes": "Dua suara bila tersedia, jika satu suara beri jeda 700ms saat pergantian pembicara."
+  },
+  {
+    "id": "L5",
+    "file": "audio/q65.mp3",
+    "task": "point",
+    "script": "男の人：あれ、かばんの中に財布がない。携帯電話と鍵はあるのに。",
+    "speakerNotes": "Laki-laki dewasa dengan ekspresi heran."
+  },
+  {
+    "id": "L6",
+    "file": "audio/q66.mp3",
+    "task": "quick_response",
+    "script": "先生：この漢字の読み方がわかりますか。",
+    "speakerNotes": "Suara guru, satu pertanyaan singkat."
+  },
+  {
+    "id": "L7",
+    "file": "audio/q67.mp3",
+    "task": "quick_response",
+    "script": "学生：窓を開けてもいいですか。",
+    "speakerNotes": "Suara pelajar, satu kalimat."
+  },
+  {
+    "id": "L8",
+    "file": "audio/q68.mp3",
+    "task": "point",
+    "script": "女の人：明日のパーティーは何を着ていきますか。\n男の人：白いシャツにしようと思ったけど、よごれてしまったので、青いシャツにします。",
+    "speakerNotes": "Dua suara jika tersedia, bila satu beri jeda pergantian."
+  },
+  {
+    "id": "L9",
+    "file": "audio/q69.mp3",
+    "task": "task",
+    "script": "先生：作文を書く前に、紙に名前を書いてください。それから、昨日したことを書きましょう。",
+    "speakerNotes": "Suara guru menjelaskan urutan, jeda pendek setelah ください。"
+  },
+  {
+    "id": "L10",
+    "file": "audio/q70.mp3",
+    "task": "task",
+    "script": "男の人：土曜日に山に行く予定だったけど、雨みたいだね。\n女の人：日曜日は晴れるそうだよ。日曜日にしよう。\n男の人：うん、そうしよう。",
+    "speakerNotes": "Dialog dua suara jika tersedia; nada ajakan."
+  }
+]
