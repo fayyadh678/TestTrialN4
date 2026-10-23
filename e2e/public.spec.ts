@@ -6,7 +6,7 @@ import { expect, test } from '@playwright/test';
  */
 
 test.describe('Situs publik yang sudah dideploy', () => {
-  test('beranda tampil, seluruh 70 soal, 25 gambar, dan 10 audio dapat dimuat', async ({ page }) => {
+  test('beranda tampil, seluruh 70 soal, 45 gambar, dan 10 audio dapat dimuat', async ({ page }) => {
     const failedRequests: string[] = [];
     page.on('response', (response) => {
       if (response.status() >= 400) failedRequests.push(`${response.status()} ${response.url()}`);
@@ -39,7 +39,7 @@ test.describe('Situs publik yang sudah dideploy', () => {
           return out;
         });
 
-        expect(assets).toHaveLength(60);
+        expect(assets).toHaveLength(55);
     for (const asset of assets) {
       expect(asset.status, `${asset.url} harus 200`).toBe(200);
       expect(asset.size, `${asset.url} tidak boleh kosong`).toBeGreaterThan(200);

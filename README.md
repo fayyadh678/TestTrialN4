@@ -75,7 +75,7 @@ Yang diuji:
 | `tests/assets.test.ts` | Semua path aset memakai `import.meta.env.BASE_URL` (bukan `/audio/...` absolut) |
 | `tests/app.test.tsx` | Alur UI: mulai, jawab, navigasi, dialog konfirmasi, hasil, review, filter, auto-submit, tanpa kebocoran kunci |
 | `e2e/exam.spec.ts` | End-to-end di browser nyata (Chromium desktop 1280px & **WebKit/Safari**, tablet iPad Mini 768px, mobile Pixel 7 412px): 70 soal dijawab, submit, review, 45 gambar & 10 MP3 tanpa 404, audio benar-benar diputar, jawaban bertahan setelah refresh, auto-submit saat waktu habis, tata letak 360–1023px tanpa scroll horizontal, dan mini-navigasi hanya tampil di samping pada ≥1024px |
-| `e2e/public.spec.ts` | Smoke test terhadap URL publik (Chromium, **WebKit/Safari**, Pixel 7): seluruh 60 aset 200, audio diputar nyata di browser, 4 panel cerita termuat (naturalWidth), refresh langsung tidak 404 |
+| `e2e/public.spec.ts` | Smoke test terhadap URL publik (Chromium, **WebKit/Safari**, Pixel 7): seluruh 55 aset 200, audio diputar nyata di browser, 4 panel cerita termuat (naturalWidth), refresh langsung tidak 404 |
 
 Hasil terakhir: **57/57 unit & integration test lulus**, **48/48 E2E lokal lulus**
 (4 proyek browser/viewport), dan **12/12 E2E terhadap URL publik lulus**
@@ -240,7 +240,7 @@ Pengujian dilakukan langsung ke <https://fayyadh678.github.io/TestTrialN4/>:
 | 5 gabungan cerita (`stories/s1..s5.svg`) | **200**, `image/svg+xml` |
 | 20 panel cerita (`stories/s1-1..s5-4.svg`) | **200**, `image/svg+xml` |
 | 20 gambar opsi (`matching/m1-a..m5-d.svg`) | **200**, `image/svg+xml` |
-| Total 60 aset diuji | **semua 200 & non-kosong** |
+| Total 55 aset diuji | **semua 200 & non-kosong** |
 | E2E publik (`npm run test:e2e:public`; Chromium, WebKit/Safari, Pixel 7) | **12/12 lulus**, tanpa satu pun respons ≥400 |
 | 70 soal dijawab di situs live lalu submit + review 70 kartu | **lulus** |
 | Audio publik diputar nyata di browser (`paused=false`, `currentTime>0`, `duration>1`) | **lulus di Chromium, WebKit/Safari, dan mobile** |
