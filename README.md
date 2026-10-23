@@ -18,8 +18,9 @@ Bahasa antarmuka: **Bahasa Indonesia**. Teks soal dan pilihan: **Bahasa Jepang**
 - Seluruh soal pilihan **A/B/C/D** dengan tepat satu kunci.
 - Countdown **115 menit** berbasis waktu absolut (`deadlineAt`), jadi tidak reset saat refresh.
 - Progres, jawaban, dan jumlah pemutaran audio tersimpan di `localStorage` (tanpa data pribadi).
-- **5 bacaan** (masing-masing 3 soal) dengan passage tetap terlihat selama kelompok soal tersebut.
-- **5 ilustrasi cerita** berisi 4 panel berurutan (SVG vektor, dibuat sendiri).
+- **7 bacaan** dengan 1–3 soal per bacaan (total tetap 15 soal) dan passage tetap terlihat selama kelompok soal tersebut.
+- **5 ilustrasi cerita** berisi 4 panel berurutan, disajikan sebagai **4 file SVG terpisah** per cerita
+  agar setiap panel tampil besar dan jelas.
 - **5 soal mencocokkan gambar** × 4 gambar opsi (20 SVG) yang benar-benar berbeda.
 - **10 audio MP3** bahasa Jepang asli untuk bagian listening, maksimum **2 kali pemutaran per soal**
   dengan penghitung ancaman play yang jujur (dihitung saat audio benar-benar berbunyi).
@@ -68,13 +69,13 @@ Yang diuji:
 | Berkas | Fokus |
 |---|---|
 | `tests/questions.test.ts` | 70 soal, ID 1..70 unik, 4 opsi A–D non-kosong & tidak duplikat, jawaban A–D, distribusi tipe `[20,15,15,5,5,10]`, referensi `passageId`/`sceneId`/`matchingId`/`audioId` valid, 5 passage × 3 soal |
-| `tests/assets-files.test.ts` | 10 MP3 ada + berisi frame MPEG valid, 5 SVG cerita bernomor panel 1–4, 20 SVG opsi matching saling berbeda, setiap soal menunjuk aset yang benar-benar ada |
+| `tests/assets-files.test.ts` | 10 MP3 ada + berisi frame MPEG valid (tanpa byte rusak), 5 cerita × 4 panel terpisah + gabungan, 20 SVG opsi matching saling berbeda, setiap soal menunjuk aset yang benar-benar ada |
 | `tests/score.test.ts` | Aturan skor (benar +1, salah/kosong +0), persentase 1 desimal, ringkasan per kategori, durasi |
 | `tests/persistence.test.ts` | Validasi `localStorage`, penolakan JSON rusak/schema salah, sanitasi jawaban & play count, countdown berbasis deadline |
 | `tests/assets.test.ts` | Semua path aset memakai `import.meta.env.BASE_URL` (bukan `/audio/...` absolut) |
 | `tests/app.test.tsx` | Alur UI: mulai, jawab, navigasi, dialog konfirmasi, hasil, review, filter, auto-submit, tanpa kebocoran kunci |
-| `e2e/exam.spec.ts` | End-to-end di browser nyata (Chromium desktop 1280px & **WebKit/Safari**, tablet iPad Mini 768px, mobile Pixel 7 412px): 70 soal dijawab, submit, review, 25 gambar & 10 MP3 tanpa 404, audio benar-benar diputar, jawaban bertahan setelah refresh, auto-submit saat waktu habis, tata letak 360–1023px tanpa scroll horizontal, dan mini-navigasi hanya tampil di samping pada ≥1024px |
-| `e2e/public.spec.ts` | Smoke test terhadap URL publik (Chromium, **WebKit/Safari**, Pixel 7): seluruh 35 aset 200, audio diputar nyata di browser, gambar termuat (naturalWidth), refresh langsung tidak 404 |
+| `e2e/exam.spec.ts` | End-to-end di browser nyata (Chromium desktop 1280px & **WebKit/Safari**, tablet iPad Mini 768px, mobile Pixel 7 412px): 70 soal dijawab, submit, review, 45 gambar & 10 MP3 tanpa 404, audio benar-benar diputar, jawaban bertahan setelah refresh, auto-submit saat waktu habis, tata letak 360–1023px tanpa scroll horizontal, dan mini-navigasi hanya tampil di samping pada ≥1024px |
+| `e2e/public.spec.ts` | Smoke test terhadap URL publik (Chromium, **WebKit/Safari**, Pixel 7): seluruh 60 aset 200, audio diputar nyata di browser, 4 panel cerita termuat (naturalWidth), refresh langsung tidak 404 |
 
 Hasil terakhir: **57/57 unit & integration test lulus**, **48/48 E2E lokal lulus**
 (4 proyek browser/viewport), dan **12/12 E2E terhadap URL publik lulus**
@@ -93,11 +94,12 @@ TestTrialN4/
 ├── public/
 │   ├── audio/q61.mp3 … q70.mp3      # 10 audio listening (MP3 asli)
 │   └── images/
-│       ├── stories/s1.svg … s5.svg  # 5 cerita × 4 panel
+│       ├── stories/s1.svg … s5.svg   # gabungan 2x2 (pratinjau/review)
+│       ├── stories/s1-1.svg … s5-4.svg # 20 panel tunggal (dipakai soal)
 │       └── matching/m1-a.svg … m5-d.svg  # 20 gambar opsi
 ├── scripts/
 │   ├── extract-data.mjs             # ekstrak bank soal dari spesifikasi
-│   ├── generate-images.mjs          # produksi 25 SVG (+ validasi XML)
+│   ├── generate-images.mjs          # produksi 45 SVG (+ validasi XML)
 │   ├── check-images.mjs             # validasi SVG dengan parser XML
 │   ├── generate-audio.mjs           # produksi 10 MP3 (TTS ja-JP)
 │   └── serve-dist.mjs               # server statis untuk E2E
@@ -131,7 +133,7 @@ TestTrialN4/
 |---:|---|---:|---|
 | 01–20 | `vocabulary` | 20 | bacaan kanji, penulisan kanji, pemilihan kata, sinonim, pemakaian |
 | 21–35 | `grammar` | 15 | partikel, pola N4, bentuk kata, pemilihan kalimat benar |
-| 36–50 | `reading` | 15 | 5 bacaan × 3 pertanyaan (`P1`–`P5`) |
+| 36–50 | `reading` | 15 | 7 bacaan, 1–3 pertanyaan per bacaan (`P1`–`P7`) |
 | 51–55 | `story_image` | 5 | 4 panel berurutan per soal (`S1`–`S5`) |
 | 56–60 | `match_image` | 5 | 1 deskripsi Jepang, 4 gambar A–D (`M1`–`M5`) |
 | 61–70 | `listening` | 10 | audio Jepang (`L1`–`L10` → `q61.mp3`–`q70.mp3`) |
@@ -164,7 +166,7 @@ const percent = Number(((correct / 70) * 100).toFixed(1));
 3. **Regenerasi aset (opsional).**
    ```bash
    npm run data:extract     # ambil ulang 5 blok JSON dari dokumen spesifikasi
-   npm run assets:images    # tulis ulang 25 SVG + validasi parser XML
+   npm run assets:images    # tulis ulang 45 SVG + validasi parser XML
    npm run assets:audio     # tulis ulang 10 MP3 dari naskah listeningScripts.json
    ```
 4. **Jalankan tes.** `npm test` akan menolak data yang tidak lengkap
@@ -227,35 +229,37 @@ refresh pada URL apa pun tidak menghasilkan 404 dan tidak memerlukan rewrite tam
 | Workflow deploy | [Deploy N4 Website to GitHub Pages](https://github.com/fayyadh678/TestTrialN4/actions/workflows/deploy.yml) — run sukses |
 | Vercel | Belum dideploy (opsi kedua, didokumentasikan pada 7.2) |
 
-### Bukti verifikasi publik (22 Oktober 2026)
+### Bukti verifikasi publik (23 Oktober 2026)
 
 Pengujian dilakukan langsung ke <https://fayyadh678.github.io/TestTrialN4/>:
 
 | Pemeriksaan | Hasil |
 |---|---|
-| `index.html` | HTTP **200**, 947 byte, memuat `assets/index-*.js` & `assets/index-*.css` di bawah `/TestTrialN4/` |
-| 10 audio (`/TestTrialN4/audio/q61..q70.mp3`) | **200**, `audio/mp3`, 52.704–83.520 byte — seluruh 10 lolos |
-| 5 cerita (`/TestTrialN4/images/stories/s1..s5.svg`) | **200**, `image/svg+xml` |
-| 20 gambar opsi (`/TestTrialN4/images/matching/m1-a..m5-d.svg`) | **200**, `image/svg+xml` |
-| Total 35 aset diuji (`ok=35 fail=0`) | **semua 200 & non-kosong** |
+| `index.html` | HTTP **200**, memuat `assets/index-*.js` & `assets/index-*.css` di bawah `/TestTrialN4/` |
+| 10 audio (`/TestTrialN4/audio/q61..q70.mp3`) | **200**, `audio/mp3` — seluruh 10 lolos, 0 byte rusak |
+| 5 gabungan cerita (`stories/s1..s5.svg`) | **200**, `image/svg+xml` |
+| 20 panel cerita (`stories/s1-1..s5-4.svg`) | **200**, `image/svg+xml` |
+| 20 gambar opsi (`matching/m1-a..m5-d.svg`) | **200**, `image/svg+xml` |
+| Total 60 aset diuji | **semua 200 & non-kosong** |
 | E2E publik (`npm run test:e2e:public`; Chromium, WebKit/Safari, Pixel 7) | **12/12 lulus**, tanpa satu pun respons ≥400 |
 | 70 soal dijawab di situs live lalu submit + review 70 kartu | **lulus** |
 | Audio publik diputar nyata di browser (`paused=false`, `currentTime>0`, `duration>1`) | **lulus di Chromium, WebKit/Safari, dan mobile** |
+| 4 panel cerita termuat (`naturalWidth > 100` untuk tiap panel) | **lulus** |
 | Refresh langsung pada URL publik | **200**, bukan 404 |
-| Review menampilkan kunci + pembahasan + 4 gambar matching (`naturalWidth=280`) + transkrip | **terverifikasi** |
 
 ### Status verifikasi lokal
 
-- [x] `npm test` lulus: **57/57** (6 berkas test).
+- [x] `npm test` lulus: **58/58** (6 berkas test).
 - [x] `npm run build` sukses (TypeScript `--noEmit` + Vite, tanpa error).
 - [x] `npm run test:e2e` lulus: **48/48** di Chromium dan **WebKit (mesin Safari)**, plus
       emulasi tablet iPad Mini 768px dan Pixel 7 412px, termasuk verifikasi base path `/TestTrialN4/`.
 - [x] GitHub Actions: `Install`, `Test`, `Build (GitHub Pages base path)`,
       `Configure Pages`, `Upload dist`, dan `Deploy` semuanya **success**.
 - [x] 70 soal termuat dalam 6 kategori dengan 4 pilihan A–D dan kunci.
-- [x] 5 bacaan × 3 soal; 5 SVG cerita empat panel; 5 × 4 SVG opsi matching.
-- [x] 10 MP3 listening playable (frame MPEG valid, HTTP 200, serta pemutaran nyata di browser
-      Chromium, WebKit/Safari, dan mobile).
+- [x] 7 bacaan (1–3 soal per bacaan, total 15); 20 panel cerita terpisah + 5 gabungan;
+      5 × 4 SVG opsi matching.
+- [x] 10 MP3 listening playable (semua frame MPEG valid, 0 byte rusak, HTTP 200, serta
+      pemutaran nyata di browser Chromium, WebKit/Safari, dan mobile).
 - [x] Timer berbasis `deadlineAt`, jawaban & play count bertahan setelah refresh, auto-submit saat waktu habis.
 - [x] Tidak ada kunci/pembahasan/transkrip di DOM selama ujian (diuji otomatis).
 - [x] Responsif: diuji pada 360, 412, 768, 820, 1023, dan ≥1024px, tanpa scroll horizontal;
@@ -267,23 +271,36 @@ Pengujian dilakukan langsung ke <https://fayyadh678.github.io/TestTrialN4/>:
 
 ## 9. Authoring aset
 
-### Gambar (25 SVG)
+### Gambar (45 SVG)
 
-- **5 cerita** (`public/images/stories/s1.svg`–`s5.svg`): satu SVG berisi 4 panel 300×300
-  bernomor 1–4 dari kiri ke kanan, gaya vektor datar konsisten, tanpa teks yang membocorkan kunci.
+- **20 panel cerita** (`public/images/stories/s1-1.svg`–`s5-4.svg`): satu file per panel,
+  berukuran 300×300 dengan viewBox persegi yang dihitung otomatis dari isi gambar
+  sehingga ilustrasi selalu memenuhi bingkai (tidak kecil di tengah). Nomor panel
+  tercetak di pojok kiri atas.
+- **5 gabungan cerita** (`s1.svg`–`s5.svg`): susunan 2×2 dari keempat panel, dipakai
+  sebagai pratinjau/review.
 - **20 gambar opsi** (`public/images/matching/m1-a.svg`–`m5-d.svg`): setiap set M1–M5
   memiliki empat gambar yang benar-benar berbeda.
+- Palet dan gaya vektor konsisten; tidak ada teks yang membocorkan kunci jawaban.
+- Objek penting (mis. kucing vs anjing) dibedakan lewat bentuk, warna, dan posisi —
+  bukan detail kecil yang sulit dilihat.
 
-Regenerasi: `npm run assets:images` (skrip juga memvalidasi XML dan menolak atribut ganda).
+Regenerasi: `npm run assets:images` (skrip memvalidasi XML, menolak atribut ganda,
+dan memastikan setiap panel punya nomor yang benar).
 
 ### Audio (10 MP3)
 
 - Naskah ada di `src/data/listeningScripts.json` (label `女の人：`/`男の人：`/`先生：`/`学生：`
   dipakai **hanya** untuk memilih suara, tidak dibacakan).
 - Suara TTS: `ja-JP-NanamiNeural` (perempuan) dan `ja-JP-KeitaNeural` (laki-laki),
-  laju `-10%`, tanpa musik latar, jeda 600–700 ms antar penutur.
-- Regenerasi: `npm run assets:audio` (butuh akses internet; hasilnya dikomit sebagai berkas statis,
-  jadi website tetap berjalan tanpa API key maupun layanan TTS saat runtime).
+  laju `-10%`, tanpa musik latar.
+- Jeda antar penutur disisipkan sebagai frame MP3 senyap yang **memakai header identik**
+  dengan output TTS (MPEG-2 Layer III, 48 kbps, 24 kHz, mono). Header yang salah membuat
+  decoder kehilangan sinkronisasi dan audio terdengar rusak.
+- Regenerasi: `npm run assets:audio` — skrip mem-parse ulang hasil gabungan dan **gagal**
+  jika ada satu byte pun yang tidak terparse sebagai frame MPEG, sehingga audio rusak
+  tidak bisa lolos lagi. Hasilnya dikomit sebagai berkas statis, jadi website tetap
+  berjalan tanpa API key maupun layanan TTS saat runtime.
 
 ---
 

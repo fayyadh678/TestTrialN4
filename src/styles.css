@@ -457,6 +457,30 @@ button {
   margin: 0 0 16px;
 }
 
+.story-panels {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.story-panel {
+  margin: 0;
+  min-width: 0;
+}
+
+.story-panel__image img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: var(--radius-sm);
+}
+
+.story-panel__number {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
 .story__image img,
 .story__image {
   max-width: 100%;
@@ -474,6 +498,12 @@ button {
   margin-top: 8px;
   color: var(--muted);
   font-size: 0.86rem;
+}
+
+@media (min-width: 768px) {
+  .story-panels {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
 }
 
 /* ------------------------------------------------------------ choice cards */

@@ -42,18 +42,28 @@ describe('Aset publik ada dan valid di disk', () => {
     }
   });
 
-  it('menyediakan 5 SVG cerita empat panel', () => {
+  it('menyediakan 5 cerita dengan 4 panel terpisah + gabungan', () => {
     for (const story of stories) {
-      const file = read(story.path);
-      expect(existsSync(file), `${story.path} harus ada`).toBe(true);
-      const svg = readFileSync(file, 'utf8');
-      expect(svg.startsWith('<svg')).toBe(true);
-      expect(svg).toContain('viewBox');
-      // Nomor panel 1..4 harus ada dan berurutan
-      const numbers = [...svg.matchAll(/>(\d)<\/text>/g)].map((m) => m[1]);
-      expect(numbers).toEqual(['1', '2', '3', '4']);
-    }
-  });
+        // Panel terpisah: sN-1.svg .. sN-4.svg
+        const slug = story.id.toLowerCase();
+        for (const number of [1, 2, 3, 4]) {
+          const panelFile = read(`images/stories/${slug}-${number}.svg`);
+          expect(existsSync(panelFile), `${slug}-${number}.svg harus ada`).toBe(true);
+          const svg = readFileSync(panelFile, 'utf8');
+          expect(svg.startsWith('<svg')).toBe(true);
+          expect(svg).toContain('viewBox');
+          // Nomor panel tercetak di dalam gambar
+          expect(svg).toMatch(new RegExp(`>${number}</text>`));
+        }
+
+        // Gabungan 2x2 tetap tersedia
+        const combinedFile = read(story.path);
+        expect(existsSync(combinedFile), `${story.path} harus ada`).toBe(true);
+        const combined = readFileSync(combinedFile, 'utf8');
+        const numbers = [...combined.matchAll(/>(\d)<\/text>/g)].map((m) => m[1]);
+        expect(numbers).toEqual(['1', '2', '3', '4']);
+      }
+    });
 
   it('menyediakan 20 SVG opsi matching yang berbeda satu sama lain', () => {
     const dir = read('images/matching');
@@ -86,13 +96,18 @@ describe('Aset publik ada dan valid di disk', () => {
         const story = stories.find((s) => s.id === question.sceneId);
         expect(story, `sceneId ${question.sceneId} harus terdaftar`).toBeDefined();
         expect(existsSync(read(story!.path))).toBe(true);
-      }
-      if (question.type === 'match_image') {
-        const number = Number(question.matchingId!.replace('M', ''));
-        for (const choice of ['a', 'b', 'c', 'd']) {
-          expect(existsSync(read(`images/matching/m${number}-${choice}.svg`))).toBe(true);
+          // Panel terpisah yang dipakai UI juga harus ada
+          const slug = story!.id.toLowerCase();
+          for (const number of [1, 2, 3, 4]) {
+            expect(existsSync(read(`images/stories/${slug}-${number}.svg`))).toBe(true);
+          }
+        }
+        if (question.type === 'match_image') {
+          const number = Number(question.matchingId!.replace('M', ''));
+          for (const choice of ['a', 'b', 'c', 'd']) {
+            expect(existsSync(read(`images/matching/m${number}-${choice}.svg`))).toBe(true);
+          }
         }
       }
-    }
-  });
+    });
 });

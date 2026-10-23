@@ -116,12 +116,15 @@ test.describe('Alur simulasi end-to-end', () => {
       expect(played!.duration).toBeGreaterThan(1);
     });
 
-  test('memuat 25 gambar (5 cerita + 20 opsi) tanpa 404', async ({ page }) => {
+  test('memuat 45 gambar (5 cerita gabungan + 20 panel + 20 opsi) tanpa 404', async ({ page }) => {
     const paths: string[] = [];
-    for (let i = 1; i <= 5; i += 1) paths.push(`images/stories/s${i}.svg`);
-    for (let m = 1; m <= 5; m += 1) {
-      for (const choice of ['a', 'b', 'c', 'd']) paths.push(`images/matching/m${m}-${choice}.svg`);
+      for (let i = 1; i <= 5; i += 1) {
+        paths.push(`images/stories/s${i}.svg`);
+        for (let panel = 1; panel <= 4; panel += 1) paths.push(`images/stories/s${i}-${panel}.svg`);
     }
+      for (let m = 1; m <= 5; m += 1) {
+        for (const choice of ['a', 'b', 'c', 'd']) paths.push(`images/matching/m${m}-${choice}.svg`);
+      }
 
       const base = process.env.E2E_PAGES_BASE === 'true' ? '/TestTrialN4/' : '/';
       await page.goto('./');
@@ -137,7 +140,7 @@ test.describe('Alur simulasi end-to-end', () => {
         { list: paths, prefix: base },
       );
 
-      expect(results).toHaveLength(25);
+      expect(results).toHaveLength(45);
       for (const item of results) {
         expect(item.status, `${item.path} harus 200`).toBe(200);
         expect(item.size, `${item.path} tidak boleh kosong`).toBeGreaterThan(200);
@@ -213,11 +216,12 @@ test.describe('Alur simulasi end-to-end', () => {
     await page.getByTestId('open-navigator').click();
     await page.getByTestId('nav-51').click();
       await expect(page.getByTestId('question-51')).toBeVisible();
-      const storyImage = page.locator('.story img');
-      await expect(storyImage).toBeVisible();
-      await expect
-        .poll(async () => storyImage.evaluate((el) => (el as HTMLImageElement).naturalWidth))
-        .toBeGreaterThan(100);
+      // Cerita kini tampil sebagai 4 panel terpisah agar jelas.
+      await expect(page.getByTestId('story-panels-S1')).toBeVisible();
+      const panels = page.locator('[data-testid="story-panels-S1"] img');
+      await expect(panels).toHaveCount(4);
+      await expect.poll(async () => panels.first().evaluate((el) => (el as HTMLImageElement).naturalWidth)).toBeGreaterThan(100);
+      await expect.poll(async () => panels.last().evaluate((el) => (el as HTMLImageElement).naturalWidth)).toBeGreaterThan(100);
 
       await page.getByTestId('open-navigator').click();
       await page.getByTestId('nav-56').click();

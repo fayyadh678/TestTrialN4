@@ -9,7 +9,7 @@ import {
 } from '../lib/dataset';
 import { ChoiceCard } from './ChoiceCard';
 import { ImageChoiceCard } from './ImageChoiceCard';
-import { AssetImage } from './AssetImage';
+import { StoryPanels } from './StoryPanels';
 import { AudioPlayer } from './AudioPlayer';
 
 type Props = {
@@ -68,17 +68,13 @@ export function QuestionPanel({
       )}
 
       {story && (
-        <figure className="story">
-          <AssetImage
-            src={story.path}
-            alt={`Ilustrasi cerita ${story.id}: empat panel berurutan dari kiri ke kanan.`}
-            className="story__image"
-          />
-          <figcaption className="story__caption">
-            Empat panel berurutan (1 → 4). Perhatikan urutan kejadiannya.
-          </figcaption>
-        </figure>
-      )}
+              <figure className="story">
+                <StoryPanels sceneId={story.id} name={story.name} />
+                <figcaption className="story__caption">
+                  Empat panel berurutan (1 → 4). Perhatikan urutan kejadiannya.
+                </figcaption>
+              </figure>
+            )}
 
       {matching && <p className="question__stimulus" lang="ja">{matching.prompt}</p>}
 

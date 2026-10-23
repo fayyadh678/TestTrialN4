@@ -80,19 +80,39 @@ describe('Bank soal 70 butir', () => {
     }
   });
 
-  it('reading memakai 5 passage dengan tepat 3 soal per passage', () => {
+  it('reading memakai 7 passage dengan 1-3 soal per passage', () => {
     const reading = bank.filter((q) => q.type === 'reading');
-    expect(passageList).toHaveLength(5);
+      expect(passageList).toHaveLength(7);
     expect(reading).toHaveLength(15);
-    for (const passage of passageList) {
-      const group = reading.filter((q) => q.passageId === passage.id);
-      expect(group).toHaveLength(3);
-    }
-    // Passage tampil berkelompok berurutan (Q36-38, Q39-41, ...)
-    expect(reading.map((q) => q.passageId)).toEqual([
-      'P1', 'P1', 'P1', 'P2', 'P2', 'P2', 'P3', 'P3', 'P3', 'P4', 'P4', 'P4', 'P5', 'P5', 'P5',
-    ]);
-  });
+
+      const counts = passageList.map((passage) => reading.filter((q) => q.passageId === passage.id).length);
+      for (const [index, count] of counts.entries()) {
+        expect(count, `passage ${passageList[index].id} harus punya 1-3 soal`).toBeGreaterThanOrEqual(1);
+        expect(count, `passage ${passageList[index].id} harus punya 1-3 soal`).toBeLessThanOrEqual(3);
+      }
+      expect(counts.reduce((sum, n) => sum + n, 0)).toBe(15);
+      // Ada variasi jumlah soal, bukan semua sama
+      expect(new Set(counts).size).toBeGreaterThan(1);
+
+      // Soal untuk passage yang sama tampil berurutan (tidak selang-seling).
+      const seen = new Set<string>();
+      let previous: string | undefined;
+      for (const question of reading) {
+        if (question.passageId !== previous) {
+          expect(seen.has(question.passageId!), `passage ${question.passageId} muncul dua kali terpisah`).toBe(false);
+          seen.add(question.passageId!);
+          previous = question.passageId;
+        }
+      }
+    });
+
+    it('setiap bacaan cukup panjang untuk level N4', () => {
+      for (const passage of passageList) {
+        // Bacaan pendek membuat soal terlalu mudah ditebak; jaga panjang minimum.
+        expect(passage.text.length, `${passage.id} terlalu pendek`).toBeGreaterThanOrEqual(120);
+        expect(passage.title.trim().length).toBeGreaterThan(0);
+      }
+    });
 
   it('story_image punya 5 scene dengan 4 panel cerita masing-masing', () => {
     expect(stories).toHaveLength(5);

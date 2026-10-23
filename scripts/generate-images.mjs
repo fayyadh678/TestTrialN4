@@ -35,6 +35,11 @@ const C = {
   greyDark: '#94A3B8',
   brown: '#B45309',
   brownLight: '#D97706',
+    wood: '#C8A27A',
+    woodDark: '#A67C52',
+    dogBrown: '#7C4A21',
+    dogMuzzle: '#E8CDA8',
+    catGrey: '#8E9AAB',
   purple: '#A855F7',
   orange: '#F97316',
   sky: '#E0F2FE',
@@ -168,20 +173,21 @@ function person(opts = {}) {
   return group(`translate(${x} ${y}) scale(${scale})`, content);
 }
 
+/** Celemek: menutupi bagian depan tubuh, dengan tali leher. */
 function apron(x, y, scale = 1, color = C.white) {
   return group(
     `translate(${x} ${y}) scale(${scale})`,
-    `<path d="M -12 -56 L 12 -56 L 14 -20 L -14 -20 Z" ${s(color, 'stroke-width="2"')} />
-     <path d="M -8 -58 L 8 -58" fill="none" stroke="${C.ink}" stroke-width="2" />`,
+    `<path d="M -7 -50 L 7 -50 L 10 -14 L -10 -14 Z" ${s(color, 'stroke-width="1.8"')} />
+     <path d="M -7 -50 L -7 -58 M 7 -50 L 7 -58" fill="none" stroke="${C.ink}" stroke-width="1.8" />
+     <path d="M -4 -30 L 4 -30" fill="none" stroke="${C.greyMid}" stroke-width="1.5" />`,
   );
 }
 
 /* --------------------------------------------------------------- props */
-/** Origin payung terbuka = titik pegangan tangan. */
+/** Origin payung terbuka = titik pegangan tangan. Tinggi kanopi ~100 unit. */
 function umbrellaOpen(x, y, scale, color, tilt = 0) {
   const inner = `
-    <path d="M -46 -60 Q 0 -106 46 -60 Q 34 -67 23 -60 Q 12 -67 0 -60 Q -12 -67 -23 -60 Q -34 -67 -46 -60 Z" ${s(color, 'stroke-width="2.5"')} />
-    <path d="M 0 -100 L 0 -112" fill="none" stroke="${C.ink}" stroke-width="3" stroke-linecap="round" />
+    <path d="M -46 -60 Q 0 -104 46 -60 Q 34 -67 23 -60 Q 12 -67 0 -60 Q -12 -67 -23 -60 Q -34 -67 -46 -60 Z" ${s(color, 'stroke-width="2.5"')} />
     <path d="M 0 -62 L 0 66" fill="none" stroke="${C.ink}" stroke-width="3" stroke-linecap="round" />
     <path d="M 0 66 Q 0 76 -10 76" fill="none" stroke="${C.ink}" stroke-width="3" stroke-linecap="round" />`;
   return group(`translate(${x} ${y}) scale(${scale}) rotate(${tilt})`, inner);
@@ -237,9 +243,15 @@ function rain(x, y, scale, count = 5) {
   return group(`translate(${x} ${y}) scale(${scale})`, drops);
 }
 
-/** Garis lantai netral, supaya objek tidak tampak melayang. */
+/** Garis lantai netral. Ditandai dekoratif agar tidak memengaruhi auto-fit. */
 function floorLine(width = 116) {
-  return `<path d="M ${-width} -2 L ${width} -2" fill="none" stroke="${C.greyMid}" stroke-width="3" stroke-linecap="round" />`;
+  return `<path d="M ${-width} -2 L ${width} -2" fill="none" stroke="${C.greyMid}" stroke-width="3" stroke-linecap="round" data-decor="1" />`;
+}
+
+/** Garis lantai yang digambar setelah auto-fit, tepat di bawah isi gambar. */
+function groundUnder(box, padding = 10) {
+  const y = box.y1 + 4;
+  return `<path d="M ${(box.x0 - padding).toFixed(1)} ${y.toFixed(1)} L ${(box.x1 + padding).toFixed(1)} ${y.toFixed(1)}" fill="none" stroke="${C.greyMid}" stroke-width="3" stroke-linecap="round" data-decor="1" />`;
 }
 
 /** Origin = dasar jendela. */
@@ -283,13 +295,65 @@ function table(x, y, scale, { items = [] } = {}) {
   return group(`translate(${x} ${y}) scale(${scale})`, inner);
 }
 
-/** Origin = garis lantai di bawah kursi. */
-function chair(x, y, scale, color = C.brownLight) {
+/** Origin = garis lantai di bawah kursi. Kursi dilihat dari samping. */
+function chair(x, y, scale, color = C.wood) {
+  const seatY = -62; // tinggi permukaan kursi
   const inner = `
-    ${roundRect(-30, -46, 60, 10, 3, color)}
-    <path d="M -28 -46 L -28 0 M 28 -46 L 28 0" fill="none" stroke="${C.brown}" stroke-width="6" stroke-linecap="round" />
-    <path d="M -28 -46 L -28 -78 M 28 -46 L 28 -78" fill="none" stroke="${C.brown}" stroke-width="6" stroke-linecap="round" />
-    ${roundRect(-30, -84, 60, 10, 3, color)}`;
+    ${roundRect(-46, seatY - 10, 92, 12, 3, color)}
+    <path d="M -40 ${seatY + 2} L -42 0" fill="none" stroke="${C.woodDark}" stroke-width="8" stroke-linecap="round" />
+    <path d="M 40 ${seatY + 2} L 42 0" fill="none" stroke="${C.woodDark}" stroke-width="8" stroke-linecap="round" />
+    <path d="M -40 ${seatY - 10} L -42 -118" fill="none" stroke="${C.woodDark}" stroke-width="8" stroke-linecap="round" />
+    <path d="M 40 ${seatY - 10} L 42 -118" fill="none" stroke="${C.woodDark}" stroke-width="8" stroke-linecap="round" />
+    ${roundRect(-46, -130, 92, 14, 3, color)}`;
+  return group(`translate(${x} ${y}) scale(${scale})`, inner);
+}
+
+/**
+ * Kucing tidur meringkuk, dilihat dari samping. Origin = dasar (lantai).
+ * Ciri pembeda utama: telinga SEGITIGA menghadap ke atas.
+ */
+function catSleeping(x, y, scale, fill = C.catGrey) {
+  const inner = `
+    <ellipse cx="10" cy="-20" rx="40" ry="19" ${s(fill)} />
+    <path d="M 48 -22 Q 70 -32 62 -52" fill="none" stroke="${C.ink}" stroke-width="7" stroke-linecap="round" />
+    <path d="M -30 -44 L -36 -66 L -14 -52 Z" ${s(fill, 'stroke-width="2.5"')} />
+    <path d="M -4 -52 L 6 -70 L 18 -48 Z" ${s(fill, 'stroke-width="2.5"')} />
+    <circle cx="-14" cy="-34" r="20" ${s(fill)} />
+    <path d="M -24 -36 Q -19 -30 -14 -36" fill="none" stroke="${C.ink}" stroke-width="2.5" stroke-linecap="round" />
+    <path d="M -8 -36 Q -3 -30 2 -36" fill="none" stroke="${C.ink}" stroke-width="2.5" stroke-linecap="round" />
+    <path d="M -13 -27 L -11 -24 L -8 -27" fill="none" stroke="${C.ink}" stroke-width="2" stroke-linecap="round" />
+    ${line(-28, -30, -40, -33, C.ink, 1.8)}${line(-28, -26, -40, -25, C.ink, 1.8)}
+    ${line(1, -30, 13, -33, C.ink, 1.8)}${line(1, -26, 13, -25, C.ink, 1.8)}`;
+  return group(`translate(${x} ${y}) scale(${scale})`, inner);
+}
+
+/**
+ * Anjing tidur meringkuk. Origin = dasar (lantai).
+ * Ciri pembeda utama: telinga TEBAL MENGGANTUNG di sisi kepala.
+ */
+function dogSleeping(x, y, scale, fill = C.dogBrown) {
+  const inner = `
+    <ellipse cx="10" cy="-20" rx="42" ry="19" ${s(fill)} />
+    <path d="M 50 -22 Q 72 -30 64 -50" fill="none" stroke="${C.ink}" stroke-width="7" stroke-linecap="round" />
+    <circle cx="-16" cy="-34" r="20" ${s(fill)} />
+    <path d="M -30 -44 Q -46 -40 -44 -22 Q -42 -12 -30 -16 Z" ${s(C.line, 'stroke-width="2.5"')} />
+    <path d="M -4 -44 Q 10 -40 8 -22 Q 6 -12 -6 -16 Z" ${s(C.line, 'stroke-width="2.5"')} />
+    <ellipse cx="-24" cy="-26" rx="12" ry="8.5" ${s(C.dogMuzzle, 'stroke-width="2"')} />
+    <ellipse cx="-29" cy="-27" rx="3.4" ry="2.8" fill="${C.ink}" stroke="none" />
+    <path d="M -22 -22 Q -18 -19 -14 -22" fill="none" stroke="${C.ink}" stroke-width="2" stroke-linecap="round" />
+    <path d="M -27 -38 Q -22 -33 -17 -38" fill="none" stroke="${C.ink}" stroke-width="2.5" stroke-linecap="round" />`;
+  return group(`translate(${x} ${y}) scale(${scale})`, inner);
+}
+
+/** Meja, dilihat dari samping. Origin = garis lantai. Lebih lebar & tinggi dari kursi. */
+function lowTable(x, y, scale) {
+  const topY = -92;
+  const inner = `
+    ${roundRect(-92, topY - 14, 184, 16, 4, C.wood)}
+    <path d="M -76 ${topY + 2} L -78 0" fill="none" stroke="${C.woodDark}" stroke-width="9" stroke-linecap="round" />
+    <path d="M 76 ${topY + 2} L 78 0" fill="none" stroke="${C.woodDark}" stroke-width="9" stroke-linecap="round" />
+    <path d="M -76 ${topY - 14} L -78 0" fill="none" stroke="${C.woodDark}" stroke-width="9" stroke-linecap="round" />
+    <path d="M 76 ${topY - 14} L 78 0" fill="none" stroke="${C.woodDark}" stroke-width="9" stroke-linecap="round" />`;
   return group(`translate(${x} ${y}) scale(${scale})`, inner);
 }
 
@@ -306,31 +370,6 @@ function banana(x, y, scale) {
     <path d="M -18 -12 Q 4 26 26 -4 Q 20 2 6 4 Q -8 6 -14 -12 Z" ${s(C.yellow)} />
     <path d="M -18 -12 L -22 -18" fill="none" stroke="${C.ink}" stroke-width="3" stroke-linecap="round" />
     <path d="M 26 -4 L 30 -8" fill="none" stroke="${C.ink}" stroke-width="3" stroke-linecap="round" />`;
-  return group(`translate(${x} ${y}) scale(${scale})`, inner);
-}
-
-function catSleeping(x, y, scale, fill = C.greyDark) {
-  const inner = `
-    <ellipse cx="0" cy="8" rx="34" ry="16" ${s(fill)} />
-    <path d="M 30 4 Q 52 -6 46 -22" fill="none" stroke="${C.ink}" stroke-width="7" stroke-linecap="round" />
-    ${circle(-24, 0, 15, fill)}
-    ${poly('-36,-8 -32,-24 -22,-12', fill, 'stroke-width="2"')}
-    ${poly('-14,-10 -14,-26 -6,-14', fill, 'stroke-width="2"')}
-    ${line(-30, 0, -24, 2, C.ink, 2)}
-    ${line(-20, 0, -14, 2, C.ink, 2)}
-    <path d="M -8 -2 Q -4 2 -8 4" fill="none" stroke="${C.ink}" stroke-width="1.6" />`;
-  return group(`translate(${x} ${y}) scale(${scale})`, inner);
-}
-
-function dogSleeping(x, y, scale, fill = C.brownLight) {
-  const inner = `
-    <ellipse cx="0" cy="8" rx="36" ry="16" ${s(fill)} />
-    <path d="M 32 4 Q 54 0 52 -18" fill="none" stroke="${C.ink}" stroke-width="7" stroke-linecap="round" />
-    ${circle(-26, 2, 15, fill)}
-    <path d="M -40 -6 Q -46 8 -34 10 Z" ${s(C.brown, 'stroke-width="2"')} />
-    <path d="M -12 -6 Q -6 8 -18 10 Z" ${s(C.brown, 'stroke-width="2"')} />
-    <ellipse cx="-32" cy="4" rx="7" ry="5" fill="${C.ink}" stroke="none" />
-    ${line(-30, -2, -24, 0, C.ink, 2)}`;
   return group(`translate(${x} ${y}) scale(${scale})`, inner);
 }
 
@@ -538,6 +577,231 @@ function frame(width, height, background = C.offWhite) {
   return `<rect x="0" y="0" width="${width}" height="${height}" rx="10" fill="${background}" />`;
 }
 
+/* ------------------------------------------- perhitungan bounding box
+
+   Setiap gambar digambar dalam koordinat "manusia" (~92 unit tinggi), lalu
+   viewBox-nya dihitung otomatis dari isi gambar supaya ilustrasi selalu
+   memenuhi bingkai. Tanpa ini, figur hanya mengisi ~30% frame dan sulit dilihat.
+   Elemen dekoratif (garis lantai) ditandai data-decor="1" dan diabaikan saat
+   menghitung, sehingga tidak memaksa viewBox jadi terlalu lebar.
+------------------------------------------------------------------------- */
+
+const IDENTITY = { a: 1, b: 0, c: 0, d: 1, e: 0, f: 0 };
+
+function multiply(m, n) {
+  return {
+    a: m.a * n.a + m.c * n.b,
+    b: m.b * n.a + m.d * n.b,
+    c: m.a * n.c + m.c * n.d,
+    d: m.b * n.c + m.d * n.d,
+    e: m.a * n.e + m.c * n.f + m.e,
+    f: m.b * n.e + m.d * n.f + m.f,
+  };
+}
+
+function parseTransform(value) {
+  let m = { ...IDENTITY };
+  for (const part of value.matchAll(/(translate|scale|rotate)\s*\(([^)]+)\)/g)) {
+    const [kind, rawArgs] = [part[1], part[2]];
+    const args = rawArgs.split(/[\s,]+/).filter(Boolean).map(Number);
+    if (kind === 'translate') {
+      m = multiply(m, { ...IDENTITY, e: args[0] ?? 0, f: args[1] ?? 0 });
+    } else if (kind === 'scale') {
+      const sx = args[0] ?? 1;
+      const sy = args[1] ?? sx;
+      m = multiply(m, { ...IDENTITY, a: sx, d: sy });
+    } else if (kind === 'rotate') {
+      const rad = ((args[0] ?? 0) * Math.PI) / 180;
+      m = multiply(m, {
+        a: Math.cos(rad),
+        b: Math.sin(rad),
+        c: -Math.sin(rad),
+        d: Math.cos(rad),
+        e: 0,
+        f: 0,
+      });
+    }
+  }
+  return m;
+}
+
+function applyMatrix(m, x, y) {
+  return { x: m.a * x + m.c * y + m.e, y: m.b * x + m.d * y + m.f };
+}
+
+function numbersOf(text) {
+  return (text.match(/-?\d+(?:\.\d+)?/g) ?? []).map(Number);
+}
+
+/** Kotak batas lokal sebuah elemen, atau null bila tidak dikenali. */
+function localBox(tag, attrText) {
+  const get = (name) => {
+    const match = new RegExp(`\\b${name}="([^"]*)"`).exec(attrText);
+    return match ? Number(match[1]) : null;
+  };
+  const pointsBox = () => {
+    const raw = /\bpoints="([^"]*)"/.exec(attrText);
+    if (!raw) return null;
+    const nums = numbersOf(raw[1]);
+    const xs = nums.filter((_, i) => i % 2 === 0);
+    const ys = nums.filter((_, i) => i % 2 === 1);
+    if (!xs.length) return null;
+    return { x0: Math.min(...xs), y0: Math.min(...ys), x1: Math.max(...xs), y1: Math.max(...ys) };
+  };
+
+  if (tag === 'circle') {
+    const cx = get('cx') ?? 0;
+    const cy = get('cy') ?? 0;
+    const r = get('r') ?? 0;
+    return { x0: cx - r, y0: cy - r, x1: cx + r, y1: cy + r };
+  }
+  if (tag === 'ellipse') {
+    const cx = get('cx') ?? 0;
+    const cy = get('cy') ?? 0;
+    const rx = get('rx') ?? 0;
+    const ry = get('ry') ?? 0;
+    return { x0: cx - rx, y0: cy - ry, x1: cx + rx, y1: cy + ry };
+  }
+  if (tag === 'rect') {
+    const x = get('x') ?? 0;
+    const y = get('y') ?? 0;
+    const w = get('width') ?? 0;
+    const h = get('height') ?? 0;
+    return { x0: x, y0: y, x1: x + w, y1: y + h };
+  }
+  if (tag === 'line') {
+    const x1 = get('x1') ?? 0;
+    const y1 = get('y1') ?? 0;
+    const x2 = get('x2') ?? 0;
+    const y2 = get('y2') ?? 0;
+    return { x0: Math.min(x1, x2), y0: Math.min(y1, y2), x1: Math.max(x1, x2), y1: Math.max(y1, y2) };
+  }
+  if (tag === 'polygon' || tag === 'polyline') {
+    return pointsBox();
+  }
+  if (tag === 'path') {
+    const raw = /\bd="([^"]*)"/.exec(attrText);
+    if (!raw) return null;
+    const nums = numbersOf(raw[1]);
+    if (nums.length < 2) return null;
+    const xs = nums.filter((_, i) => i % 2 === 0);
+    const ys = nums.filter((_, i) => i % 2 === 1);
+    return { x0: Math.min(...xs), y0: Math.min(...ys), x1: Math.max(...xs), y1: Math.max(...ys) };
+  }
+  if (tag === 'text') {
+    const x = get('x') ?? 0;
+    const y = get('y') ?? 0;
+    return { x0: x, y0: y - 12, x1: x + 20, y1: y + 4 };
+  }
+  return null;
+}
+
+/**
+ * Hitung bounding box seluruh bentuk dalam markup SVG.
+ * Hanya transform translate/scale/rotate yang dipakai generator ini.
+ */
+function computeBounds(markup) {
+  const stack = [{ matrix: { ...IDENTITY }, decor: 0 }];
+  let box = null;
+  const tagPattern = /<(\/?)([a-zA-Z][\w:-]*)((?:"[^"]*"|'[^']*'|[^>"'])*?)(\/?)>/g;
+  let match;
+
+  const extend = (transformed) => {
+    for (const point of transformed) {
+      if (!box) box = { x0: point.x, y0: point.y, x1: point.x, y1: point.y };
+      else {
+        box.x0 = Math.min(box.x0, point.x);
+        box.y0 = Math.min(box.y0, point.y);
+        box.x1 = Math.max(box.x1, point.x);
+        box.y1 = Math.max(box.y1, point.y);
+      }
+    }
+  };
+
+  while ((match = tagPattern.exec(markup))) {
+    const [, closing, tag, attrText, selfClosing] = match;
+    const current = stack[stack.length - 1];
+
+    if (tag === 'g') {
+      if (closing === '/') {
+        if (stack.length > 1) stack.pop();
+        continue;
+      }
+      const transform = /\btransform="([^"]*)"/.exec(attrText);
+      const decor = /\bdata-decor="1"/.test(attrText);
+      stack.push({
+        matrix: transform ? multiply(current.matrix, parseTransform(transform[1])) : { ...current.matrix },
+        decor: current.decor + (decor ? 1 : 0),
+      });
+      if (selfClosing === '/') stack.pop();
+      continue;
+    }
+
+    if (current.decor > 0) continue;
+    if (tag === 'defs' || tag === 'clipPath' || tag === 'style') continue;
+
+    const local = localBox(tag, attrText);
+    if (!local) continue;
+
+    const pad = 1.5;
+    const corners = [
+      { x: local.x0 - pad, y: local.y0 - pad },
+      { x: local.x1 + pad, y: local.y0 - pad },
+      { x: local.x0 - pad, y: local.y1 + pad },
+      { x: local.x1 + pad, y: local.y1 + pad },
+    ].map((p) => applyMatrix(current.matrix, p.x, p.y));
+    extend(corners);
+  }
+
+  return box;
+}
+
+/**
+   * Hitung viewBox yang SELALU persegi dan memuat seluruh isi gambar.
+   * Persegi penting agar semua panel tampil dengan skala dan bingkai yang sama.
+   */
+  function contentViewBox(body, { padding = 14 } = {}) {
+    const box = computeBounds(body);
+    if (!box) return { x: -50, y: -100, size: 200 };
+
+    const contentW = box.x1 - box.x0;
+    const contentH = box.y1 - box.y0;
+    const size = Math.max(contentW, contentH, 1) + padding * 2;
+
+    // Pusatkan isi di dalam kotak persegi.
+    const centerX = (box.x0 + box.x1) / 2;
+    const centerY = (box.y0 + box.y1) / 2;
+
+    return {
+      x: centerX - size / 2,
+      y: centerY - size / 2,
+      size,
+    };
+  }
+
+  function viewBoxString(vb) {
+    return `${vb.x.toFixed(2)} ${vb.y.toFixed(2)} ${vb.size.toFixed(2)} ${vb.size.toFixed(2)}`;
+  }
+
+  /** Bungkus konten dalam SVG persegi dengan viewBox ketat (tanpa transform manual). */
+  function fittedSvg({ width, height, body, background = C.offWhite, padding = 14, badge = null }) {
+    const vb = contentViewBox(body, { padding });
+    const unit = vb.size;
+
+    const badgeMarkup =
+      badge == null
+        ? ''
+        : `<g><circle cx="${(vb.x + unit * 0.085).toFixed(2)}" cy="${(vb.y + unit * 0.085).toFixed(2)}" r="${(unit * 0.062).toFixed(2)}" fill="${C.white}" stroke="${C.ink}" stroke-width="${(unit * 0.008).toFixed(2)}" />
+  <text x="${(vb.x + unit * 0.085).toFixed(2)}" y="${(vb.y + unit * 0.085 + unit * 0.026).toFixed(2)}" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="${(unit * 0.075).toFixed(1)}" font-weight="600" fill="${C.ink}">${badge}</text></g>`;
+
+    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${viewBoxString(vb)}" width="${width}" height="${height}" preserveAspectRatio="xMidYMid meet" role="img">
+  <rect x="${vb.x.toFixed(2)}" y="${vb.y.toFixed(2)}" width="${unit.toFixed(2)}" height="${unit.toFixed(2)}" fill="${background}" />
+  ${body}
+  ${badgeMarkup}
+  <rect x="${vb.x.toFixed(2)}" y="${vb.y.toFixed(2)}" width="${unit.toFixed(2)}" height="${unit.toFixed(2)}" fill="none" stroke="${C.ink}" stroke-width="${(unit * 0.009).toFixed(2)}" />
+  </svg>`;
+  }
+
 /** Validasi XML minimal: semua tag harus tertutup dan semua atribut punya kutip penutup. */
 function assertXml(label, markup) {
   const stack = [];
@@ -569,21 +833,58 @@ function assertXml(label, markup) {
 }
 
 function panel(number, x, y, size, body, background = C.offWhite) {
+  // Setiap panel memakai auto-fit supaya isi cerita selalu memenuhi bingkai.
+  const bounds = computeBounds(body);
+  const box = bounds ?? { x0: -size / 2, y0: -size, x1: size / 2, y1: 0 };
+  const padding = 16;
+  const contentW = Math.max(1, box.x1 - box.x0);
+  const contentH = Math.max(1, box.y1 - box.y0);
+  const scale = Math.min((size - padding * 2) / contentW, (size - padding * 2) / contentH);
+  const centerX = (box.x0 + box.x1) / 2;
+  const centerY = (box.y0 + box.y1) / 2;
+  const tx = size / 2 - centerX * scale;
+  const ty = size / 2 - centerY * scale;
+
   const inner = `
     ${roundRect(0, 0, size, size, 14, background, 'stroke-width="2"')}
-    ${group(`translate(${size / 2} ${Math.round(size * 0.93)})`, body)}
+    <g transform="translate(${tx.toFixed(2)} ${ty.toFixed(2)}) scale(${scale.toFixed(4)})">${body}</g>
     <circle cx="26" cy="26" r="14" fill="${C.white}" stroke="${C.ink}" stroke-width="2" />
     <text x="26" y="32" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="16" font-weight="600" fill="${C.ink}">${number}</text>
     <rect x="0" y="0" width="${size}" height="${size}" rx="14" fill="none" stroke="${C.ink}" stroke-width="2.5" />`;
   return group(`translate(${x} ${y})`, inner);
 }
 
+/**
+ * Satu panel cerita sebagai SVG mandiri (300x300). Dipakai aplikasi supaya
+ * setiap panel bisa ditampilkan besar (grid), bukan diperkecil jadi 1/4 lebar.
+ */
+function singlePanelSvg(number, body) {
+  const size = 300;
+  return fittedSvg({
+    width: size,
+    height: size,
+    body,
+    background: C.offWhite,
+    padding: 12,
+    badge: number,
+  });
+}
+
+/** Versi gabungan 2x2, dipakai sebagai fallback / pratinjau cepat. */
 function storySvg(panels) {
   const size = 300;
-  const gap = 20;
-  const totalW = size * 4 + gap * 4;
-  const totalH = size + gap * 2;
-  const body = panels.map((content, i) => panel(i + 1, gap + i * (size + gap), gap, size, content)).join('');
+  const gap = 16;
+  const totalW = size * 2 + gap * 3;
+  const totalH = size * 2 + gap * 3;
+  const positions = [
+    [gap, gap],
+    [gap * 2 + size, gap],
+    [gap, gap * 2 + size],
+    [gap * 2 + size, gap * 2 + size],
+  ];
+  const body = panels
+    .map((content, i) => panel(i + 1, positions[i][0], positions[i][1], size, content))
+    .join('');
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${totalW} ${totalH}" width="${totalW}" height="${totalH}" role="img">
 ${frame(totalW, totalH, C.white)}
 ${body}
@@ -597,67 +898,79 @@ ${body}
  * y âˆˆ [-275, 0] supaya tidak meluber keluar bingkai panel.
  */
 
+
+/* -------------------------------------------------------------- scenes
+ * Setiap cerita terdiri dari 4 panel. Panel ditulis sebagai file terpisah
+ * (sN-M.svg) agar tiap panel bisa ditampilkan besar, plus gabungan sN.svg.
+ *
+ * ATURAN KOMPOSISI (penting): auto-fit menormalkan seluruh bounding box, jadi
+ * subjek utama harus MENDOMINASI panel. Gunakan skala figur besar (1.3-1.7)
+ * dan letakkan properti berdekatan supaya tidak ada ruang kosong yang membuat
+ * semuanya mengecil.
+ */
+
+const storyPanels = {};
+
 function storyScene1() {
-  // 1. Pagi: anak laki-laki berseragam di rumah, awan gelap terlihat di jendela.
-  const p1 = [floorLine(120),
-    group('translate(88 -160)', houseWindow(0, 0, 0.7, { dark: true })),
-    person({ x: -40, y: 0, scale: 1, shirt: C.blueLight }),
-    group('translate(-96 0)', schoolBag(0, 0, 0.78, C.red)),
+  // 1. Pagi: anak berseragam di rumah, awan gelap di jendela.
+  const p1 = [
+    person({ x: 18, y: 0, scale: 1.45, shirt: C.blueLight }),
+    group('translate(78 -104)', houseWindow(0, 0, 0.72, { dark: true })),
+    group('translate(-42 0)', schoolBag(0, 0, 0.92, C.red)),
   ].join('');
 
-  // 2. Ibu menyerahkan payung biru terlipat; anak memasukkannya ke tas.
-  const p2 = [floorLine(120),
+  // 2. Ibu menyerahkan payung terlipat; anak memasukkannya ke tas.
+  const p2 = [
     person({
-      x: -92,
+      x: -56,
       y: 0,
-      scale: 0.92,
+      scale: 1.4,
       shirt: C.purple,
       hair: C.hairAlt,
       hairStyle: 'bun',
-      armRight: [[13, -52], [26, -44], [34, -40]],
+      armRight: [[13, -52], [24, -46], [32, -42]],
     }),
-    umbrellaFolded(-61, -37, 0.92, C.blue, -6),
+    umbrellaFolded(-17, -60, 1.15, C.blue, -6),
     person({
-      x: 44,
+      x: 62,
       y: 0,
-      scale: 0.92,
+      scale: 1.4,
       shirt: C.blueLight,
-      armLeft: [[-13, -52], [-26, -44], [-34, -40]],
+      armLeft: [[-13, -52], [-24, -46], [-32, -42]],
     }),
-    group('translate(4 0)', schoolBag(0, 0, 0.74, C.red)),
+    group('translate(17 0)', schoolBag(0, 0, 0.86, C.red)),
   ].join('');
 
-  // 3. Dalam perjalanan hujan turun; anak mengambil payung dari tas.
-  const p3 = [floorLine(120),
-    group('translate(-24 -252)', cloudShape(0.9, C.greyDark)),
-    rain(46, -226, 0.85, 5),
-    group('translate(-78 0)', schoolBag(0, 0, 0.68, C.red)),
-    person({
-      x: 26,
-      y: 0,
-      scale: 0.94,
-      shirt: C.blueLight,
-      armRight: [[13, -52], [26, -56], [38, -62]],
-    }),
-    umbrellaOpen(62, -58, 0.88, C.blue, -6),
-  ].join('');
+  // 3. Hujan turun; anak mengeluarkan payung dari tas.
+    const p3 = [
+      group('translate(-34 -196)', cloudShape(1.0, C.greyDark)),
+      rain(30, -190, 1.0, 5),
+      person({
+        x: 30,
+        y: 0,
+        scale: 1.4,
+        shirt: C.blueLight,
+        armRight: [[13, -52], [24, -56], [34, -60]],
+      }),
+      umbrellaOpen(78, -84, 1.2, C.blue, -6),
+      group('translate(-42 0)', schoolBag(0, 0, 0.86, C.red)),
+    ].join('');
 
-  // 4. Anak tiba di gerbang sekolah sambil memegang payung biru terbuka.
-  const p4 = [floorLine(120),
-    group('translate(34 -14)', schoolBuilding(0, 0, 0.6, { gate: true })),
-    person({
-      x: -96,
-      y: 0,
-      scale: 0.94,
-      shirt: C.blueLight,
-      armRight: [[13, -52], [26, -56], [36, -60]],
-    }),
-    umbrellaOpen(-60, -56, 0.86, C.blue, -4),
-    group('translate(-92 -244)', cloudShape(0.58, C.greyDark)),
-    rain(-52, -222, 0.6, 3),
-  ].join('');
+    // 4. Tiba di gerbang sekolah sambil memegang payung terbuka.
+    const p4 = [
+      group('translate(86 0)', schoolBuilding(0, 0, 0.72, { gate: true })),
+      person({
+        x: -46,
+        y: 0,
+        scale: 1.4,
+        shirt: C.blueLight,
+        armRight: [[13, -52], [24, -56], [34, -60]],
+      }),
+      umbrellaOpen(4, -78, 1.1, C.blue, -4),
+    ].join('');
 
-  return storySvg([p1, p2, p3, p4]);
+  storyPanels.s1 = [p1, p2, p3, p4];
+  return [p1, p2, p3, p4];
 }
 
 function storyScene2() {
@@ -667,221 +980,230 @@ function storyScene2() {
       apron(opts.x ?? 0, opts.y ?? 0, opts.scale ?? 1, C.white),
     ].join('');
 
-  // 1. Perempuan mencuci tomat merah di wastafel yang terpasang di meja kerja.
-  const p1 = [floorLine(120),
-      group('translate(34 -62)', counter(0, 0, 0.86, 210)),
-      group('translate(48 -62)', sink(0, 0, 0.78)),
-      tomato(48, -79, 0.62),
-      apronWoman({ x: -84, y: 0, scale: 0.92, armRight: [[13, -52], [40, -60], [74, -76]] }),
-    ].join('');
+  // 1. Mencuci tomat di wastafel.
+  const p1 = [
+    group('translate(56 -74)', counter(0, 0, 0.88, 190)),
+    group('translate(70 -74)', sink(0, 0, 0.8)),
+    tomato(70, -92, 0.62),
+    apronWoman({ x: -52, y: 0, scale: 1.4, armRight: [[13, -52], [36, -58], [66, -70]] }),
+  ].join('');
 
-    // 2. Perempuan memotong tomat di papan potong dengan pisau.
-    const p2 = [floorLine(120),
-      group('translate(34 -62)', counter(0, 0, 0.86, 210)),
-      group('translate(22 -62)', cuttingBoard(0, 0, 0.78)),
-      tomato(6, -76, 0.62),
-      tomato(50, -74, 0.38),
-      group('translate(44 -132)', knife(0, 0, 0.8, 16)),
-      apronWoman({ x: -84, y: 0, scale: 0.92, armRight: [[13, -52], [40, -62], [76, -78]] }),
-    ].join('');
+  // 2. Memotong tomat dengan pisau.
+  const p2 = [
+    group('translate(56 -74)', counter(0, 0, 0.88, 190)),
+    group('translate(40 -74)', cuttingBoard(0, 0, 0.8)),
+    tomato(24, -88, 0.62),
+    tomato(70, -86, 0.38),
+    group('translate(66 -140)', knife(0, 0, 0.8, 16)),
+    apronWoman({ x: -52, y: 0, scale: 1.4, armRight: [[13, -52], [36, -60], [68, -72]] }),
+  ].join('');
 
-    // 3. Perempuan memasukkan tomat dan selada ke dalam mangkuk.
-    const p3 = [floorLine(120),
-      group('translate(34 -62)', counter(0, 0, 0.86, 210)),
-      group('translate(52 -62)', bowlSalad(0, 0, 0.78)),
-      circle(-6, -78, 10, C.greenLight),
-      apronWoman({ x: -84, y: 0, scale: 0.92, armRight: [[13, -52], [40, -62], [74, -70]] }),
-    ].join('');
+  // 3. Memasukkan tomat dan selada ke mangkuk.
+  const p3 = [
+    group('translate(56 -74)', counter(0, 0, 0.88, 190)),
+    group('translate(76 -74)', bowlSalad(0, 0, 0.8)),
+    circle(22, -90, 10, C.greenLight),
+    apronWoman({ x: -52, y: 0, scale: 1.4, armRight: [[13, -52], [36, -60], [66, -70]] }),
+  ].join('');
 
-    // 4. Perempuan memakan salad dari mangkuk dengan garpu.
-    const p4 = [floorLine(120),
-      group('translate(30 -62)', table(0, 0, 0.62)),
-      group('translate(30 -90)', bowlSalad(0, 0, 0.6)),
-      group('translate(60 -126)', fork(0, 0, 0.7, 22)),
-      apronWoman({ x: -74, y: 0, scale: 0.95, face: 'smile', armRight: [[13, -52], [34, -66], [70, -96]] }),
-    ].join('');
+  // 4. Memakan salad dengan garpu.
+  const p4 = [
+    group('translate(54 -72)', table(0, 0, 0.66)),
+    group('translate(54 -98)', bowlSalad(0, 0, 0.62)),
+    group('translate(82 -138)', fork(0, 0, 0.72, 22)),
+    apronWoman({ x: -52, y: 0, scale: 1.4, face: 'smile', armRight: [[13, -52], [34, -64], [70, -96]] }),
+  ].join('');
 
-  return storySvg([p1, p2, p3, p4]);
+  storyPanels.s2 = [p1, p2, p3, p4];
+  return [p1, p2, p3, p4];
 }
 
 function storyScene3() {
-  // 1. Pria berdiri di pintu rumah mencari kunci dengan saku kosong.
-  const p1 = [floorLine(120),
-    group('translate(94 0)', doorProp(0, 0, 0.82)),
+  // 1. Mencari kunci di pintu rumah, saku kosong.
+  const p1 = [
+    group('translate(84 0)', doorProp(0, 0, 0.9)),
     person({
-      x: -45,
+      x: -34,
       y: 0,
-      scale: 1,
+      scale: 1.4,
       shirt: C.green,
       headTilt: 6,
-      armRight: [[13, -52], [26, -38], [26, -20]],
+      armRight: [[13, -52], [26, -38], [26, -18]],
     }),
   ].join('');
 
   // 2. Mengecek isi tas; kunci tidak ada.
-  const p2 = [floorLine(120),
-    group('translate(92 0)', schoolBag(0, 0, 0.88, C.blue)),
+  const p2 = [
+    group('translate(76 0)', schoolBag(0, 0, 1.05, C.blue)),
     person({
-      x: -30,
+      x: -34,
       y: 0,
-      scale: 1,
+      scale: 1.4,
       shirt: C.green,
-      headTilt: 10,
-      armLeft: [[-13, -52], [-30, -48], [-44, -42]],
-      armRight: [[13, -52], [56, -54], [96, -50]],
+      headTilt: 8,
+      armLeft: [[-13, -52], [-28, -50], [-42, -46]],
+      armRight: [[13, -52], [46, -52], [76, -48]],
     }),
   ].join('');
 
-  // 3. Berjongkok dan menemukan kunci kuning di bawah meja.
-  const p3 = [floorLine(120),
-    group('translate(0 -52)', table(0, 0, 0.68)),
-    keyProp(24, -26, 0.7),
+  // 3. Berjongkok, menemukan kunci kuning di bawah meja.
+  const p3 = [
+    group('translate(-6 -62)', table(0, 0, 0.7)),
+    keyProp(24, -32, 0.78),
     person({
-      x: 104,
+      x: 88,
       y: 0,
-      scale: 0.74,
+      scale: 0.95,
       shirt: C.green,
       headTilt: 14,
-      legLeft: [[-8, -30], [-26, -16], [-34, -2]],
+      legLeft: [[-8, -30], [-24, -16], [-30, -2]],
       legRight: [[8, -30], [12, -10], [14, 0]],
-      armLeft: [[-13, -52], [-40, -42], [-66, -26]],
+      armLeft: [[-13, -52], [-36, -44], [-58, -30]],
     }),
   ].join('');
 
-  // 4. Keluar rumah dengan kunci di tangan.
-  const p4 = [floorLine(120),
-    group('translate(100 0)', doorProp(0, 0, 0.8)),
+  // 4. Keluar dengan kunci di tangan.
+  const p4 = [
+    group('translate(88 0)', doorProp(0, 0, 0.88)),
     person({
-      x: -30,
+      x: -34,
       y: 0,
-      scale: 1,
+      scale: 1.4,
       shirt: C.green,
       face: 'smile',
-      armRight: [[13, -52], [30, -62], [42, -78]],
+      armRight: [[13, -52], [30, -62], [44, -78]],
     }),
-    group('translate(46 -80)', keyProp(0, 0, 0.82)),
+    group('translate(30 -100)', keyProp(0, 0, 0.9)),
   ].join('');
 
-  return storySvg([p1, p2, p3, p4]);
+  storyPanels.s3 = [p1, p2, p3, p4];
+  return [p1, p2, p3, p4];
 }
 
 function storyScene4() {
-  // 1. Perempuan muda menunggu bus di halte.
-  const p1 = [floorLine(120),
-    group('translate(74 0)', busStop(0, 0, 0.8)),
-    person({ x: -40, y: 0, scale: 0.9, shirt: C.red, hair: C.hairAlt, hairStyle: 'long' }),
-    handBag(-72, -20, 0.7, C.purple),
-  ].join('');
-
-  // 2. Bus berhenti di depan gedung perpustakaan yang bertanda ikon buku.
-  const p2 = [floorLine(120),
-    group('translate(28 -12)', libraryBuilding(0, 0, 0.54)),
-    group('translate(-46 0)', bus(0, 0, 0.54)),
-  ].join('');
-
-  // 3. Meminjam satu buku di meja pustakawan.
-  const p3 = [floorLine(120),
-    group('translate(28 0)', deskCounter(0, 0, 0.6)),
-    group('translate(38 -48)', book(0, 0, 0.68, C.red)),
-    person({ x: 96, y: 0, scale: 0.84, shirt: C.white, hair: C.hairGrey, hairStyle: 'bun' }),
+  // 1. Menunggu bus di halte.
+  const p1 = [
+    group('translate(72 0)', busStop(0, 0, 0.86)),
     person({
-      x: -78,
+      x: -38,
       y: 0,
-      scale: 0.94,
+      scale: 1.35,
       shirt: C.red,
       hair: C.hairAlt,
       hairStyle: 'long',
-      armRight: [[13, -52], [36, -54], [60, -50]],
+    }),
+    handBag(-70, -30, 0.76, C.purple),
+  ].join('');
+
+  // 2. Bus berhenti di depan perpustakaan.
+  const p2 = [
+    group('translate(26 -12)', libraryBuilding(0, 0, 0.54)),
+    group('translate(-24 0)', bus(0, 0, 0.56)),
+  ].join('');
+
+  // 3. Meminjam buku di meja pustakawan.
+  const p3 = [
+    group('translate(26 0)', deskCounter(0, 0, 0.62)),
+    group('translate(38 -52)', book(0, 0, 0.7, C.red)),
+    person({ x: 84, y: 0, scale: 0.92, shirt: C.white, hair: C.hairGrey, hairStyle: 'bun' }),
+    person({
+      x: -62,
+      y: 0,
+      scale: 1.3,
+      shirt: C.red,
+      hair: C.hairAlt,
+      hairStyle: 'long',
+      armRight: [[13, -52], [34, -54], [60, -50]],
     }),
   ].join('');
 
-  // 4. Membaca buku tersebut di rumah.
-  const p4 = [floorLine(120),
-    group('translate(30 -62)', table(0, 0, 0.6)),
-    group('translate(30 -76)', book(0, 0, 0.62, C.red)),
+  // 4. Membaca buku itu di rumah.
+  const p4 = [
+    group('translate(44 -74)', table(0, 0, 0.62)),
+    group('translate(44 -96)', book(0, 0, 0.64, C.red)),
     person({
-      x: -72,
+      x: -50,
       y: 0,
-      scale: 0.95,
+      scale: 1.3,
       shirt: C.red,
       hair: C.hairAlt,
       hairStyle: 'long',
       face: 'smile',
-      armRight: [[13, -52], [30, -60], [46, -70]],
+      armRight: [[13, -52], [30, -58], [48, -68]],
     }),
   ].join('');
 
-  return storySvg([p1, p2, p3, p4]);
+  storyPanels.s4 = [p1, p2, p3, p4];
+  return [p1, p2, p3, p4];
 }
 
 function storyScene5() {
-  // 1. Ayah mengambil keranjang belanja kosong di pintu supermarket.
-  const p1 = [floorLine(120),
-    group('translate(96 0)', doorProp(0, 0, 0.8)),
+  // 1. Ayah mengambil keranjang kosong di pintu supermarket.
+  const p1 = [
+    group('translate(82 0)', doorProp(0, 0, 0.86)),
     person({
-      x: -46,
+      x: -38,
       y: 0,
-      scale: 0.96,
+      scale: 1.35,
       shirt: C.orange,
       hair: C.hairGrey,
-      armRight: [[13, -52], [28, -46], [38, -42]],
+      armRight: [[13, -52], [26, -46], [34, -40]],
     }),
-    group('translate(30 -42)', basket(0, 0, 0.7)),
+    group('translate(30 -52)', basket(0, 0, 0.78)),
   ].join('');
 
-  // 2. Memasukkan satu kotak susu putih ke keranjang.
-  const p2 = [floorLine(120),
+  // 2. Memasukkan kotak susu ke keranjang.
+  const p2 = [
     person({
-      x: -66,
+      x: -54,
       y: 0,
-      scale: 0.95,
+      scale: 1.35,
       shirt: C.orange,
       hair: C.hairGrey,
-      armRight: [[13, -52], [30, -56], [46, -58]],
+      armRight: [[13, -52], [30, -54], [46, -58]],
     }),
-    group('translate(2 -58)', basket(0, 0, 0.76)),
-    group('translate(76 -58)', milkCarton(0, 0, 0.82)),
+    group('translate(6 -66)', basket(0, 0, 0.84)),
+    group('translate(76 -66)', milkCarton(0, 0, 0.88)),
   ].join('');
 
-  // 3. Menaruh kotak berisi telur ke keranjang yang sudah berisi susu.
-  const p3 = [floorLine(120),
+  // 3. Menaruh kotak telur ke keranjang yang sudah berisi susu.
+  const p3 = [
     person({
-      x: -66,
+      x: -54,
       y: 0,
-      scale: 0.95,
+      scale: 1.35,
       shirt: C.orange,
       hair: C.hairGrey,
-      armRight: [[13, -52], [30, -56], [46, -60]],
+      armRight: [[13, -52], [30, -54], [46, -60]],
     }),
-    group('translate(2 -58)', basket(0, 0, 0.78)),
-    group('translate(2 -88)', milkCarton(0, 0, 0.5)),
-    group('translate(80 -60)', eggCarton(0, 0, 0.82)),
+    group('translate(6 -66)', basket(0, 0, 0.86)),
+    group('translate(6 -98)', milkCarton(0, 0, 0.52)),
+    group('translate(78 -68)', eggCarton(0, 0, 0.86)),
   ].join('');
 
-  // 4. Membayar di kasir; susu dan telur terlihat di konter.
-  const p4 = [floorLine(120),
-    group('translate(24 0)', deskCounter(0, 0, 0.64)),
-    group('translate(-14 -40)', milkCarton(0, 0, 0.72)),
-    group('translate(36 -40)', eggCarton(0, 0, 0.72)),
-    group('translate(78 -40)', cashRegister(0, 0, 0.78)),
-    person({ x: -84, y: 0, scale: 0.86, shirt: C.blueLight, hair: C.hairAlt, hairStyle: 'bun' }),
+  // 4. Membayar di kasir; susu dan telur di konter.
+  const p4 = [
+    group('translate(30 0)', deskCounter(0, 0, 0.66)),
+    group('translate(-8 -46)', milkCarton(0, 0, 0.74)),
+    group('translate(42 -46)', eggCarton(0, 0, 0.74)),
+    group('translate(88 -46)', cashRegister(0, 0, 0.8)),
+    person({ x: -74, y: 0, scale: 1.15, shirt: C.blueLight, hair: C.hairAlt, hairStyle: 'bun' }),
   ].join('');
 
-  return storySvg([p1, p2, p3, p4]);
+  storyPanels.s5 = [p1, p2, p3, p4];
+  return [p1, p2, p3, p4];
 }
-
 /* --------------------------------------------------- matching pictures */
 const MATCH_SIZE = 280;
 
-function matchSvg(body) {
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${MATCH_SIZE} ${MATCH_SIZE}" width="${MATCH_SIZE}" height="${MATCH_SIZE}" role="img">
-${frame(MATCH_SIZE, MATCH_SIZE, C.offWhite)}
-<g transform="translate(${MATCH_SIZE / 2} ${Math.round(MATCH_SIZE * 0.88)})">${body}</g>
-<rect x="0" y="0" width="${MATCH_SIZE}" height="${MATCH_SIZE}" rx="10" fill="none" stroke="${C.ink}" stroke-width="2.5" />
-</svg>`;
+function matchSvg(body, { withGround = false } = {}) {
+  const bounds = computeBounds(body);
+  // Garis lantai ikut digambar di dalam viewBox, sedikit di bawah isi gambar.
+  const groundMarkup = withGround && bounds ? groundUnder(bounds, 12) : '';
+  return fittedSvg({ width: MATCH_SIZE, height: MATCH_SIZE, body: body + groundMarkup });
 }
 
-const ground = `<path d="M -110 0 L 110 0" fill="none" stroke="${C.greyMid}" stroke-width="3" />`;
+const ground = `<g data-decor="1"><path d="M -110 0 L 110 0" fill="none" stroke="${C.greyMid}" stroke-width="3" /></g>`;
 
 /** Pejalan kaki dengan payung. Origin payung = titik pegangan tangan. */
 function walkerWithUmbrella({ x = -40, scale = 1, shirt, umbrella, pants = C.line, hair, hairStyle = 'short', skirt = false }) {
@@ -902,40 +1224,35 @@ function walkerWithUmbrella({ x = -40, scale = 1, shirt, umbrella, pants = C.lin
 }
 
 function m1a() {
-  return matchSvg(
-    ground + walkerWithUmbrella({ x: -40, shirt: C.green, umbrella: C.blue }),
-  );
+  return matchSvg(walkerWithUmbrella({ x: -40, shirt: C.green, umbrella: C.blue }), { withGround: true });
 }
 function m1b() {
   return matchSvg(
-    ground +
-      walkerWithUmbrella({
-        x: -40,
-        shirt: C.purple,
-        umbrella: C.red,
-        hair: C.hairAlt,
-        hairStyle: 'long',
-        skirt: true,
-      }),
+    walkerWithUmbrella({
+      x: -40,
+      shirt: C.purple,
+      umbrella: C.red,
+      hair: C.hairAlt,
+      hairStyle: 'long',
+      skirt: true,
+    }),
+    { withGround: true },
   );
 }
 function m1c() {
-  return matchSvg(
-    ground + walkerWithUmbrella({ x: -40, shirt: C.green, umbrella: C.red }),
-  );
+  return matchSvg(walkerWithUmbrella({ x: -40, shirt: C.green, umbrella: C.red }), { withGround: true });
 }
 function m1d() {
   return matchSvg(
-    ground +
-      person({
-        x: -40,
-        y: 0,
-        scale: 1,
-        shirt: C.green,
-        pants: C.line,
-        armRight: [[13, -52], [24, -44], [30, -34]],
-      }) +
-      handBag(10, -64, 0.95, C.red),
+    person({
+      x: -40,
+      y: 0,
+      scale: 1,
+      shirt: C.green,
+      pants: C.line,
+      armRight: [[13, -52], [24, -44], [30, -34]],
+    }) + handBag(10, -64, 0.95, C.red),
+    { withGround: true },
   );
 }
 
@@ -974,25 +1291,29 @@ function m2d() {
   );
 }
 
+/** Satu set gambar M3: hewan tidur di posisi tertentu. */
+function m3Scene(body) {
+  return matchSvg(body, { withGround: true });
+}
+
+// Kursi: permukaan duduk di y=-62, jadi hewan "di atas kursi" diletakkan di y=-72.
+const SEAT_TOP = -72;
+
 function m3a() {
-  return matchSvg(
-    group('translate(0 0)', chair(0, 0, 1, C.brownLight)) + group('translate(-2 -18)', catSleeping(0, 0, 0.62)),
-  );
+  // Kucing tidur DI ATAS kursi.
+  return m3Scene(chair(0, 0, 1, C.wood) + catSleeping(0, SEAT_TOP, 0.52));
 }
 function m3b() {
-  return matchSvg(
-    group('translate(0 0)', chair(0, 0, 1, C.brownLight)) + group('translate(-2 -18)', dogSleeping(0, 0, 0.62)),
-  );
+  // Anjing tidur DI BAWAH kursi.
+  return m3Scene(chair(0, 0, 1, C.wood) + dogSleeping(4, 0, 0.8));
 }
 function m3c() {
-  return matchSvg(
-    group('translate(0 -41)', table(0, 0, 0.85, { items: [] })) + group('translate(-6 -20)', catSleeping(0, 0, 0.6)),
-  );
+  // Kucing tidur DI BAWAH MEJA (bukan kursi).
+  return m3Scene(lowTable(0, 0, 1) + catSleeping(4, 0, 0.8));
 }
 function m3d() {
-  return matchSvg(
-    group('translate(0 0)', chair(0, 0, 1, C.brownLight)) + group('translate(-2 -18)', catSleeping(0, 0, 0.62, C.greyMid)),
-  );
+  // Kucing tidur DI BAWAH kursi — jawaban benar.
+  return m3Scene(chair(0, 0, 1, C.wood) + catSleeping(4, 0, 0.8));
 }
 
 /** Pengendara sepeda: origin sepeda di tanah. */
@@ -1021,30 +1342,30 @@ function bicycleWithRider({ x = -46, scale = 0.8, shirt, hair = C.hair, hairStyl
 
 function m4a() {
   return matchSvg(
-    ground +
-      bicycleWithRider({ x: -52, shirt: C.purple, hair: C.hairAlt, hairStyle: 'long', skirt: true }) +
+    bicycleWithRider({ x: -52, shirt: C.purple, hair: C.hairAlt, hairStyle: 'long', skirt: true }) +
       person({ x: 74, y: 0, scale: 0.85, shirt: C.blueLight, pants: C.line }),
+    { withGround: true },
   );
 }
 function m4b() {
   return matchSvg(
-    ground +
-      bicycleWithRider({ x: -52, shirt: C.blueLight }) +
+    bicycleWithRider({ x: -52, shirt: C.blueLight }) +
       person({ x: 76, y: 0, scale: 0.85, shirt: C.purple, pants: C.line, hair: C.hairAlt, hairStyle: 'long', skirt: true }),
+    { withGround: true },
   );
 }
 function m4c() {
   return matchSvg(
-    ground +
-      bicycleWithRider({ x: -74, scale: 0.58, shirt: C.blueLight }) +
+    bicycleWithRider({ x: -74, scale: 0.58, shirt: C.blueLight }) +
       bicycleWithRider({ x: 44, scale: 0.58, shirt: C.purple, hair: C.hairAlt, hairStyle: 'long', skirt: true }),
+    { withGround: true },
   );
 }
 function m4d() {
   return matchSvg(
-    ground +
-      person({ x: -48, y: 0, scale: 0.85, shirt: C.blueLight, pants: C.line }) +
+    person({ x: -48, y: 0, scale: 0.85, shirt: C.blueLight, pants: C.line }) +
       person({ x: 44, y: 0, scale: 0.85, shirt: C.purple, pants: C.line, hair: C.hairAlt, hairStyle: 'long', skirt: true }),
+    { withGround: true },
   );
 }
 
@@ -1058,6 +1379,7 @@ const m5a = () => m5body(C.white, C.blue);
 const m5b = () => m5body(C.red, C.white);
 const m5c = () => m5body(C.blue, C.white);
 const m5d = () => m5body(C.blue, C.yellow);
+
 /* ---------------------------------------------------------------- write */
 const scenes = { s1: storyScene1, s2: storyScene2, s3: storyScene3, s4: storyScene4, s5: storyScene5 };
 const matching = {
@@ -1088,15 +1410,33 @@ const matchingDir = join(root, 'public', 'images', 'matching');
 mkdirSync(storiesDir, { recursive: true });
 mkdirSync(matchingDir, { recursive: true });
 
+let written = 0;
+
 for (const [name, build] of Object.entries(scenes)) {
-  const svg = build();
-  assertXml(`${name}.svg`, svg);
-  writeFileSync(join(storiesDir, `${name}.svg`), svg, 'utf8');
+  // Satu file per panel: s1-1.svg .. s5-4.svg agar tiap panel tampil besar.
+  const panels = build();
+  panels.forEach((content, index) => {
+    const panelSvg = singlePanelSvg(index + 1, content);
+    assertXml(`${name}-${index + 1}.svg`, panelSvg);
+    writeFileSync(join(storiesDir, `${name}-${index + 1}.svg`), panelSvg, 'utf8');
+    written += 1;
+  });
+
+  // Gabungan 2x2 tetap tersedia sebagai pratinjau/review.
+  const combined = storySvg(panels);
+  assertXml(`${name}.svg`, combined);
+  writeFileSync(join(storiesDir, `${name}.svg`), combined, 'utf8');
+  written += 1;
 }
+
 for (const [name, build] of Object.entries(matching)) {
   const svg = build();
   assertXml(`${name}.svg`, svg);
   writeFileSync(join(matchingDir, `${name}.svg`), svg, 'utf8');
+  written += 1;
 }
-console.log('Total gambar:', Object.keys(scenes).length + Object.keys(matching).length);
+console.log(
+  `Total gambar: ${written} (${Object.keys(scenes).length * 5} story + ${Object.keys(matching).length} matching)`,
+);
+
 

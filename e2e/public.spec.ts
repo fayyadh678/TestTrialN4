@@ -22,19 +22,24 @@ test.describe('Situs publik yang sudah dideploy', () => {
       const prefix = window.location.pathname.replace(/\/+$/, '/');
       const list: string[] = [];
       for (let i = 61; i <= 70; i += 1) list.push(`${prefix}audio/q${i}.mp3`);
-      for (let i = 1; i <= 5; i += 1) list.push(`${prefix}images/stories/s${i}.svg`);
-      for (let m = 1; m <= 5; m += 1) {
-        for (const c of ['a', 'b', 'c', 'd']) list.push(`${prefix}images/matching/m${m}-${c}.svg`);
+          for (let i = 1; i <= 5; i += 1) {
+            list.push(`${prefix}images/stories/s${i}.svg`);
+            for (let panel = 1; panel <= 4; panel += 1) {
+              list.push(`${prefix}images/stories/s${i}-${panel}.svg`);
+            }
+          }
+          for (let m = 1; m <= 5; m += 1) {
+            for (const c of ['a', 'b', 'c', 'd']) list.push(`${prefix}images/matching/m${m}-${c}.svg`);
       }
-      const out: { url: string; status: number; size: number }[] = [];
-      for (const url of list) {
-        const response = await fetch(url);
-        out.push({ url, status: response.status, size: (await response.arrayBuffer()).byteLength });
-      }
-      return out;
-    });
+          const out: { url: string; status: number; size: number }[] = [];
+          for (const url of list) {
+            const response = await fetch(url);
+            out.push({ url, status: response.status, size: (await response.arrayBuffer()).byteLength });
+          }
+          return out;
+        });
 
-    expect(assets).toHaveLength(35);
+        expect(assets).toHaveLength(60);
     for (const asset of assets) {
       expect(asset.status, `${asset.url} harus 200`).toBe(200);
       expect(asset.size, `${asset.url} tidak boleh kosong`).toBeGreaterThan(200);
@@ -122,16 +127,21 @@ test.describe('Situs publik yang sudah dideploy', () => {
     await page.getByTestId('open-navigator').click();
     await page.getByTestId('nav-55').click();
 
-    const image = page.locator('.story img');
-    await expect(image).toBeVisible();
-    await expect.poll(async () => image.evaluate((el) => (el as HTMLImageElement).naturalWidth)).toBeGreaterThan(500);
+      // Empat panel terpisah, masing-masing harus benar-benar termuat.
+      const panels = page.locator('[data-testid="story-panels-S5"] img');
+      await expect(panels).toHaveCount(4);
+      for (let index = 0; index < 4; index += 1) {
+        await expect
+          .poll(async () => panels.nth(index).evaluate((el) => (el as HTMLImageElement).naturalWidth))
+          .toBeGreaterThan(100);
+      }
 
-    await page.getByTestId('open-navigator').click();
-    await page.getByTestId('nav-60').click();
-    const option = page.locator('.image-choice__image img').first();
-    await expect(option).toBeVisible();
-    await expect.poll(async () => option.evaluate((el) => (el as HTMLImageElement).naturalWidth)).toBeGreaterThan(100);
-  });
+      await page.getByTestId('open-navigator').click();
+      await page.getByTestId('nav-60').click();
+      const option = page.locator('.image-choice__image img').first();
+      await expect(option).toBeVisible();
+      await expect.poll(async () => option.evaluate((el) => (el as HTMLImageElement).naturalWidth)).toBeGreaterThan(100);
+    });
 
   test('refresh langsung pada URL publik tidak menghasilkan 404', async ({ page }, testInfo) => {
     await page.goto('./');

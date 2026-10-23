@@ -465,7 +465,7 @@
       "D": "水・土・日"
     },
     "answer": "A",
-    "explanation": "Paragraf menyebut 月曜日・水曜日・金曜日.",
+    "explanation": "Paragraf pertama menyebut 月曜日・水曜日・金曜日 sebagai hari kerja biasa.",
     "passageId": "P1"
   },
   {
@@ -479,13 +479,13 @@
       "D": "日曜日"
     },
     "answer": "B",
-    "explanation": "Karena Jumat ada ujian, ia menggantinya pada Kamis.",
+    "explanation": "Karena Jumat ada ujian, ia bekerja pada Kamis sebagai gantinya (かわりに木曜日に働きます).",
     "passageId": "P1"
   },
   {
     "id": 38,
     "type": "reading",
-    "prompt": "山田さんは、パン屋まで何で行きますか。",
+    "prompt": "山田さんは、家からパン屋まで何で行きますか。",
     "options": {
       "A": "歩いて",
       "B": "バスで",
@@ -493,7 +493,7 @@
       "D": "電車で"
     },
     "answer": "C",
-    "explanation": "Ia selalu pergi dengan sepeda: 自転車で.",
+    "explanation": "Teks menyebut いつも自転車で行きます dan 自転車で十五分ぐらい, jadi ia bersepeda.",
     "passageId": "P1"
   },
   {
@@ -507,7 +507,7 @@
       "D": "学校の正門の前"
     },
     "answer": "D",
-    "explanation": "Titik kumpul di depan gerbang utama sekolah.",
+    "explanation": "Pengumuman meminta berkumpul di 学校の正門の前 pada pukul sembilan.",
     "passageId": "P2"
   },
   {
@@ -521,7 +521,7 @@
       "D": "ノートだけ"
     },
     "answer": "A",
-    "explanation": "Pengumuman meminta membawa makan siang dan minuman.",
+    "explanation": "Tertulis 昼ごはんと飲み物を持ってきてください; tiket disiapkan guru.",
     "passageId": "P2"
   },
   {
@@ -535,21 +535,21 @@
       "D": "来週の日曜日に行きます"
     },
     "answer": "B",
-    "explanation": "雨が降っても行きます = tetap berangkat walaupun hujan.",
+    "explanation": "雨が降っても行きます berarti tetap berangkat ke museum walaupun hujan.",
     "passageId": "P2"
   },
   {
     "id": 42,
     "type": "reading",
-    "prompt": "この図書館はいつ休みですか。",
+    "prompt": "図書館が休みの日はどれですか。",
     "options": {
-      "A": "月曜日",
-      "B": "土曜日",
-      "C": "日曜日",
-      "D": "金曜日"
+      "A": "日曜日だけ",
+      "B": "日曜日と祝日",
+      "C": "土曜日と祝日",
+      "D": "月曜日と祝日"
     },
-    "answer": "C",
-    "explanation": "Tertulis 日曜日は休みです.",
+    "answer": "B",
+    "explanation": "Teks menyebut 日曜日と祝日は休みです, jadi hari Minggu dan hari libur nasional tutup.",
     "passageId": "P3"
   },
   {
@@ -563,25 +563,11 @@
       "D": "三冊"
     },
     "answer": "D",
-    "explanation": "Satu orang dapat meminjam maksimum tiga buku.",
+    "explanation": "Tertulis 本は一人三冊まで, jadi maksimum tiga buku per orang.",
     "passageId": "P3"
   },
   {
     "id": 44,
-    "type": "reading",
-    "prompt": "本を返すとき、どこへ持っていきますか。",
-    "options": {
-      "A": "一階のカウンター",
-      "B": "二階の教室",
-      "C": "駅の前",
-      "D": "受付の外"
-    },
-    "answer": "A",
-    "explanation": "Buku dikembalikan ke counter lantai satu.",
-    "passageId": "P3"
-  },
-  {
-    "id": 45,
     "type": "reading",
     "prompt": "二人が見る映画は何時からですか。",
     "options": {
@@ -591,25 +577,11 @@
       "D": "午前十時"
     },
     "answer": "B",
-    "explanation": "Film mulai pukul 15.00.",
+    "explanation": "佐藤 menawarkan 午後三時からの映画 dan 木村 setuju, jadi film mulai pukul 15.00.",
     "passageId": "P4"
   },
   {
-    "id": 46,
-    "type": "reading",
-    "prompt": "二人は何時に会いますか。",
-    "options": {
-      "A": "午後一時半",
-      "B": "午後三時半",
-      "C": "午後二時半",
-      "D": "午前九時"
-    },
-    "answer": "C",
-    "explanation": "Mereka berjanji bertemu jam 14.30, bukan jam mulai film.",
-    "passageId": "P4"
-  },
-  {
-    "id": 47,
+    "id": 45,
     "type": "reading",
     "prompt": "二人はどこで会いますか。",
     "options": {
@@ -619,11 +591,11 @@
       "D": "映画館の入り口"
     },
     "answer": "D",
-    "explanation": "Titik pertemuan adalah pintu masuk bioskop.",
+    "explanation": "Titik pertemuan adalah 映画館の入り口 pada pukul 14.30.",
     "passageId": "P4"
   },
   {
-    "id": 48,
+    "id": 46,
     "type": "reading",
     "prompt": "「私」はだれと海へ行きましたか。",
     "options": {
@@ -633,25 +605,11 @@
       "D": "父"
     },
     "answer": "A",
-    "explanation": "Penulis pergi bersama adik laki-lakinya: 弟.",
+    "explanation": "Kalimat pertama menyebut 私は弟と海へ行きました, jadi pergi bersama adik laki-laki.",
     "passageId": "P5"
   },
   {
-    "id": 49,
-    "type": "reading",
-    "prompt": "駅から海まで、どうやって行きましたか。",
-    "options": {
-      "A": "バスで十分",
-      "B": "二十分歩いて",
-      "C": "タクシーで五分",
-      "D": "自転車で二十分"
-    },
-    "answer": "B",
-    "explanation": "Dari stasiun mereka berjalan kaki selama 20 menit.",
-    "passageId": "P5"
-  },
-  {
-    "id": 50,
+    "id": 47,
     "type": "reading",
     "prompt": "「私」はなぜ泳ぎませんでしたか。",
     "options": {
@@ -661,8 +619,50 @@
       "D": "雨が降っていたから"
     },
     "answer": "C",
-    "explanation": "Penulis tidak berenang karena air dingin.",
+    "explanation": "Tertulis 水が冷たかったので泳ぎませんでした, jadi karena airnya dingin.",
     "passageId": "P5"
+  },
+  {
+    "id": 48,
+    "type": "reading",
+    "prompt": "「私」はどうして引っ越しましたか。",
+    "options": {
+      "A": "部屋が狭かったから",
+      "B": "会社から遠かったから",
+      "C": "家賃が高かったから",
+      "D": "駅から遠かったから"
+    },
+    "answer": "B",
+    "explanation": "前の部屋は会社から遠くて、電車で一時間かかりました — alasan pindah karena jauh dari kantor.",
+    "passageId": "P6"
+  },
+  {
+    "id": 49,
+    "type": "reading",
+    "prompt": "田中さんは、朝どこで単語を覚えますか。",
+    "options": {
+      "A": "家で",
+      "B": "電車の中で",
+      "C": "学校で",
+      "D": "会社で"
+    },
+    "answer": "B",
+    "explanation": "Teks menyebut 朝は電車の中で、アプリを使って単語を覚えます.",
+    "passageId": "P7"
+  },
+  {
+    "id": 50,
+    "type": "reading",
+    "prompt": "田中さんは、週に一度何をしますか。",
+    "options": {
+      "A": "ドラマを見ます",
+      "B": "単語を書きます",
+      "C": "日本人の友だちと話します",
+      "D": "試験を受けます"
+    },
+    "answer": "C",
+    "explanation": "Tertulis 週に一度、日本人の友だちと話す練習もします — sekali seminggu berlatih bicara dengan teman Jepang.",
+    "passageId": "P7"
   },
   {
     "id": 51,

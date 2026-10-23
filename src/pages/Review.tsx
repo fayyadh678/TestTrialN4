@@ -5,6 +5,7 @@ import { questions } from '../lib/dataset';
 import { audioPathForQuestion, getListeningScript, getMatchingScene, getPassage, getStoryScene, matchingNumber } from '../lib/dataset';
 import { questionStatusFor } from '../lib/score';
 import { AssetImage } from '../components/AssetImage';
+import { StoryPanels } from '../components/StoryPanels';
 import { AudioPlayer } from '../components/AudioPlayer';
 
 type Filter = 'all' | 'wrong' | 'unanswered' | 'correct';
@@ -131,12 +132,10 @@ function ReviewRow({
       )}
 
       {story && (
-        <AssetImage
-          src={story.path}
-          alt={`Ilustrasi cerita untuk soal ${question.id}: empat panel berurutan.`}
-          className="review-card__story"
-        />
-      )}
+              <div className="review-card__story">
+                <StoryPanels sceneId={story.id} name={story.name} />
+              </div>
+            )}
 
       {matching && <p className="review-card__stimulus" lang="ja">{matching.prompt}</p>}
 
